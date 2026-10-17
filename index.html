@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <!-- Firebase App, Auth, Firestore SDKs (Compat v10) -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
@@ -59,37 +58,29 @@ body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--surface2); c
 .login-logo .brand-name span { color:var(--accent); }
 .login-logo .brand-sub { color:rgba(255,255,255,0.4); font-size:0.75rem; letter-spacing:4px; text-transform:uppercase; margin-top:4px; }
 .login-card {
-  background:rgba(255,255,255,0.05); backdrop-filter:blur(20px);
-  border:1px solid rgba(255,255,255,0.1); border-radius:24px;
-  padding:48px 44px; width:400px; text-align:center;
-  box-shadow:0 24px 80px rgba(0,0,0,0.4);
+  background:rgba(255,255,255,0.06); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+  border:1.5px solid rgba(255,255,255,0.12); border-radius:24px;
+  padding:42px 38px; width:430px; max-width:92vw; text-align:center;
+  box-shadow:0 24px 80px rgba(0,0,0,0.45);
 }
-.login-card h3 { color:rgba(255,255,255,0.6); font-size:0.7rem; letter-spacing:3px; text-transform:uppercase; margin-bottom:32px; font-weight:500; }
-.pin-display {
-  display:flex; gap:12px; justify-content:center; margin-bottom:28px;
+.login-card h3 { color:rgba(255,255,255,0.95); font-size:0.95rem; letter-spacing:1px; margin-bottom:4px; font-weight:700; font-family:'Space Grotesk',sans-serif; }
+.login-auth-input {
+  width:100%; padding:13px 16px; font-size:0.92rem; text-align:left;
+  background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.18);
+  border-radius:10px; color:white; outline:none; font-family:'Plus Jakarta Sans',sans-serif;
+  transition:all 0.2s; box-sizing:border-box;
 }
-.pin-dot {
-  width:14px; height:14px; border-radius:50%;
-  border:2px solid rgba(255,255,255,0.3);
-  background:transparent; transition:0.2s;
-}
-.pin-dot.filled { background:var(--accent); border-color:var(--accent); }
-.login-input {
-  width:100%; padding:16px 20px; font-size:2rem; text-align:center;
-  letter-spacing:12px; background:rgba(255,255,255,0.08);
-  border:1px solid rgba(255,255,255,0.15); border-radius:12px; color:white;
-  outline:none; font-family:'Space Grotesk',sans-serif;
-  caret-color:var(--accent);
-}
-.login-input::placeholder { font-size:1rem; letter-spacing:2px; color:rgba(255,255,255,0.3); }
-.login-input:focus { border-color:var(--accent); background:rgba(255,255,255,0.1); }
+.login-auth-input::placeholder { color:rgba(255,255,255,0.35); font-size:0.85rem; }
+.login-auth-input:focus { border-color:var(--teal); background:rgba(255,255,255,0.12); box-shadow:0 0 0 3px rgba(0,180,216,0.18); }
 .login-btn {
-  width:100%; padding:16px; margin-top:16px; border:none; border-radius:12px; cursor:pointer;
+  width:100%; padding:15px; margin-top:8px; border:none; border-radius:11px; cursor:pointer;
   background:linear-gradient(135deg, var(--accent), #c73652);
-  color:white; font-size:0.95rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
-  transition:0.2s; font-family:'Space Grotesk',sans-serif;
+  color:white; font-size:0.9rem; font-weight:800; letter-spacing:1px; text-transform:uppercase;
+  transition:0.2s; font-family:'Space Grotesk',sans-serif; box-shadow:0 4px 18px rgba(233,69,96,0.35);
 }
-.login-btn:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(233,69,96,0.4); }
+.login-btn:hover { transform:translateY(-2px); box-shadow:0 8px 26px rgba(233,69,96,0.5); }
+.login-btn:disabled { opacity:0.6; cursor:not-allowed; transform:none; box-shadow:none; }
+
 
 /* ===== SIDEBAR ===== */
 aside {
@@ -510,23 +501,448 @@ input:checked + .slider:before { transform:translateX(18px); }
 .divider { height:1px; background:var(--border); margin:16px 0; }
 .text-accent { color:var(--accent); }
 .text-muted { color:var(--text3); }
-/* ===== EXECUTIVE REPORT DASHBOARD ===== */
-.exec-container { max-width:1050px; margin:0 auto 30px; background:#ffffff; border-radius:12px; border:1px solid #e2e8f0; box-shadow:0 4px 24px rgba(0,0,0,0.06); overflow:hidden; }
-.exec-banner { background:#1e3a5f; color:#ffffff; padding:18px 24px; }
-.exec-banner h2 { font-size:1.35rem; font-weight:800; letter-spacing:0.5px; margin:0 0 4px; color:#ffffff; }
-.exec-banner p { font-size:0.8rem; color:#cbd5e1; font-style:italic; margin:0; }
-.exec-section-navy { background:#1e3a5f; color:#ffffff; padding:10px 20px; font-weight:800; font-size:0.82rem; letter-spacing:0.5px; text-transform:uppercase; }
-.exec-section-slate { background:#e2e8f0; color:#1e293b; padding:8px 20px; font-weight:800; font-size:0.8rem; letter-spacing:0.5px; text-transform:uppercase; border-top:1px solid #cbd5e1; }
-.exec-section-amber { background:#fef3c7; color:#92400e; padding:8px 20px; font-weight:800; font-size:0.8rem; letter-spacing:0.5px; text-transform:uppercase; border-top:1px solid #fde68a; border-left:4px solid #f59e0b; }
-.exec-section-mint { background:#d1ecdf; color:#064e3b; padding:8px 20px; font-weight:800; font-size:0.8rem; letter-spacing:0.5px; text-transform:uppercase; border-top:1px solid #a7f3d0; }
-.exec-table { width:100%; border-collapse:collapse; font-size:0.84rem; }
-.exec-table th { background:#f8fafc; padding:10px 12px; font-weight:700; color:#334155; border:1px solid #e2e8f0; }
-.exec-table td { padding:10px 12px; border:1px solid #e2e8f0; color:#1e293b; }
-.exec-table-total { background:#d1ecdf !important; font-weight:800 !important; color:#064e3b !important; }
-.exec-glance-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; padding:16px 20px; background:#ffffff; }
-.exec-glance-card { background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:14px 10px; text-align:center; position:relative; }
-.exec-glance-card .label { font-size:0.68rem; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; }
-.exec-glance-card .val { font-size:1.15rem; font-weight:800; color:#0f172a; font-family:'Space Grotesk',sans-serif; }
+/* ===== EXECUTIVE REPORT DASHBOARD (MODERNIZED SAAS DESIGN) ===== */
+.exec-wrapper { max-width:1240px; margin:0 auto; display:flex; flex-direction:column; gap:20px; }
+.exec-container { width:100%; background:#ffffff; border-radius:16px; border:1px solid var(--border); box-shadow:0 4px 20px rgba(0,0,0,0.03); overflow:hidden; margin-bottom:24px; }
+
+/* Unified Executive Command Bar */
+.exec-command-bar {
+  background:#ffffff;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:18px 24px;
+  box-shadow:0 2px 12px rgba(0,0,0,0.03);
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+.exec-header-row {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:16px;
+}
+.exec-title-group h1 {
+  font-family:'Space Grotesk',sans-serif;
+  font-size:1.55rem;
+  font-weight:800;
+  color:var(--brand);
+  letter-spacing:-0.5px;
+  margin-bottom:4px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.exec-title-group p {
+  color:var(--text2);
+  font-size:0.86rem;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.exec-header-actions {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+/* Control Pills & Segmented Navigation */
+.exec-controls-row {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:14px;
+  padding-top:14px;
+  border-top:1px solid var(--surface3);
+}
+.exec-subtabs {
+  display:inline-flex;
+  background:var(--surface2);
+  padding:4px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  gap:4px;
+}
+.exec-subtab-btn {
+  padding:7px 16px;
+  border-radius:8px;
+  border:none;
+  background:transparent;
+  color:var(--text2);
+  font-weight:700;
+  font-size:0.8rem;
+  cursor:pointer;
+  transition:all 0.18s ease;
+  font-family:inherit;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+.exec-subtab-btn:hover {
+  color:var(--text);
+  background:rgba(255,255,255,0.7);
+}
+.exec-subtab-btn.active {
+  background:#ffffff;
+  color:var(--brand);
+  font-weight:800;
+  box-shadow:0 2px 8px rgba(0,0,0,0.06);
+}
+
+.exec-horizon-group {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.exec-period-pills {
+  display:inline-flex;
+  background:var(--surface2);
+  padding:4px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  gap:3px;
+}
+.exec-period-btn {
+  padding:6px 14px;
+  border-radius:8px;
+  border:none;
+  background:transparent;
+  color:var(--text2);
+  font-weight:700;
+  font-size:0.8rem;
+  cursor:pointer;
+  transition:all 0.18s ease;
+  font-family:inherit;
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+}
+.exec-period-btn:hover {
+  color:var(--text);
+  background:rgba(255,255,255,0.7);
+}
+.exec-period-btn.active {
+  background:var(--brand);
+  color:#ffffff;
+  font-weight:800;
+  box-shadow:0 2px 8px rgba(26,26,46,0.18);
+}
+.exec-month-btn {
+  padding:5px 12px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:#ffffff;
+  color:var(--text2);
+  font-size:0.76rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:all 0.15s ease;
+  font-family:inherit;
+}
+.exec-month-btn:hover {
+  border-color:var(--teal);
+  color:var(--teal);
+  background:#f0f9ff;
+}
+.exec-month-btn.active {
+  background:var(--teal);
+  color:#ffffff;
+  border-color:var(--teal);
+  box-shadow:0 2px 6px rgba(0,180,216,0.25);
+}
+.exec-period-chip {
+  font-size:0.75rem;
+  font-weight:700;
+  color:#0369a1;
+  background:#f0f9ff;
+  padding:6px 14px;
+  border-radius:99px;
+  border:1px solid #bae6fd;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+
+/* Elegant Inner Banner / Context Strip */
+.exec-banner {
+  background:linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color:#ffffff;
+  padding:18px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+}
+.exec-banner h2 {
+  font-family:'Space Grotesk',sans-serif;
+  font-size:1.25rem;
+  font-weight:800;
+  letter-spacing:0.3px;
+  margin:0 0 4px;
+  color:#ffffff;
+}
+.exec-banner p {
+  font-size:0.82rem;
+  color:#94a3b8;
+  margin:0;
+}
+.exec-live-badge {
+  font-size:0.74rem;
+  background:rgba(255,255,255,0.08);
+  color:#a7f3d0;
+  padding:5px 12px;
+  border-radius:99px;
+  border:1px solid rgba(255,255,255,0.14);
+  backdrop-filter:blur(8px);
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-weight:600;
+}
+
+/* Clean Section Headers */
+.exec-section-bar {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:16px 24px 12px;
+  background:#ffffff;
+  border-bottom:1px solid #f1f5f9;
+}
+.exec-section-title {
+  font-size:0.84rem;
+  font-weight:800;
+  letter-spacing:0.5px;
+  text-transform:uppercase;
+  color:var(--brand);
+  font-family:'Space Grotesk',sans-serif;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.exec-section-hint {
+  font-size:0.74rem;
+  color:var(--text3);
+  font-weight:500;
+  text-transform:none;
+}
+
+/* Backward-compatible section tags styled cleanly */
+.exec-section-navy, .exec-section-slate, .exec-section-amber, .exec-section-mint {
+  padding:14px 24px 10px;
+  font-weight:800;
+  font-size:0.82rem;
+  letter-spacing:0.5px;
+  text-transform:uppercase;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.exec-section-navy { background:#fafbfc; color:var(--brand); border-bottom:1px solid var(--border); }
+.exec-section-slate { background:#fafbfc; color:#334155; border-bottom:1px solid var(--border); border-top:1px solid var(--border); }
+.exec-section-amber { background:#fffdf7; color:#92400e; border-bottom:1px solid #fef3c7; border-top:1px solid #fef3c7; border-left:4px solid #f59e0b; }
+.exec-section-mint { background:#f0fdf4; color:#065f46; border-bottom:1px solid #d1fae5; border-top:1px solid #d1fae5; border-left:4px solid #059669; }
+
+/* Modern KPI Glance Grid */
+.exec-glance-grid {
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:14px;
+  padding:20px 24px;
+  background:#ffffff;
+}
+.exec-glance-card {
+  background:#ffffff;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:16px 18px;
+  text-align:left;
+  position:relative;
+  transition:all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.exec-glance-card .label {
+  font-size:0.72rem;
+  font-weight:700;
+  color:var(--text2);
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+  margin-bottom:8px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.exec-glance-card .val {
+  font-size:1.45rem;
+  font-weight:800;
+  color:var(--brand);
+  font-family:'Space Grotesk',sans-serif;
+  line-height:1.15;
+}
+.exec-glance-card .sub-hint {
+  font-size:0.72rem;
+  color:var(--text3);
+  margin-top:8px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.exec-glance-card.exec-clickable:hover {
+  transform:translateY(-2px);
+  border-color:var(--teal);
+  box-shadow:0 8px 24px rgba(0, 180, 216, 0.12);
+  background:#ffffff;
+}
+.exec-glance-card.exec-clickable:hover .sub-hint {
+  color:var(--teal);
+}
+
+/* Modern Performance Table */
+.exec-table-wrap {
+  overflow-x:auto;
+  background:#ffffff;
+}
+.exec-table {
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  font-size:0.85rem;
+}
+.exec-table th {
+  background:#f8fafc;
+  padding:12px 16px;
+  font-weight:700;
+  color:#475569;
+  font-size:0.74rem;
+  text-transform:uppercase;
+  letter-spacing:0.6px;
+  border-bottom:1.5px solid var(--border);
+  border-top:none;
+  border-left:none;
+  border-right:none;
+}
+.exec-table td {
+  padding:12px 16px;
+  border-bottom:1px solid #f1f5f9;
+  border-top:none;
+  border-left:none;
+  border-right:none;
+  color:#1e293b;
+  transition:background 0.15s ease;
+}
+.exec-table tr:hover td {
+  background:#f8fafc;
+}
+.exec-table td.exec-clickable:hover {
+  background:#eff6ff !important;
+  color:#0369a1 !important;
+  cursor:pointer;
+}
+.exec-table-total td {
+  background:#ecfdf5 !important;
+  font-weight:800 !important;
+  color:#065f46 !important;
+  font-size:0.88rem !important;
+  border-top:2px solid #a7f3d0 !important;
+  border-bottom:2px solid #a7f3d0 !important;
+}
+
+/* Symmetrical 2-Column Bottom Analytics Layout */
+.exec-bottom-grid {
+  display:grid;
+  grid-template-columns:1.15fr 0.85fr;
+  gap:24px;
+  padding:24px;
+  background:#ffffff;
+  border-top:1px solid #f1f5f9;
+}
+@media (max-width:960px) {
+  .exec-bottom-grid { grid-template-columns:1fr; }
+  .exec-glance-grid { grid-template-columns:repeat(2, 1fr); }
+}
+
+/* Category Progress Bars */
+.exec-cat-container {
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.exec-cat-card {
+  padding:12px 14px;
+  border-radius:12px;
+  border:1px solid #f1f5f9;
+  background:#ffffff;
+  transition:all 0.2s ease;
+  cursor:pointer;
+}
+.exec-cat-card:hover {
+  background:#f8fafc;
+  border-color:#cbd5e1;
+  transform:translateX(3px);
+  box-shadow:0 4px 12px rgba(0,0,0,0.03);
+}
+.exec-cat-track {
+  height:9px;
+  background:#eef0f6;
+  border-radius:99px;
+  overflow:hidden;
+  margin-top:8px;
+}
+
+/* Strategic Story & Narrative Card */
+.exec-story-card {
+  background:linear-gradient(145deg, #fafbfc 0%, #f0fdf4 100%);
+  border:1.5px solid #d1fae5;
+  border-radius:14px;
+  padding:22px 20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  gap:16px;
+  cursor:pointer;
+  transition:all 0.2s ease;
+}
+.exec-story-card:hover {
+  background:linear-gradient(145deg, #ffffff 0%, #ecfdf5 100%);
+  border-color:#059669;
+  box-shadow:0 6px 20px rgba(5,150,105,0.08);
+  transform:translateY(-2px);
+}
+.exec-quote-text {
+  font-size:0.96rem;
+  line-height:1.65;
+  color:#1e293b;
+  font-style:italic;
+  margin:0;
+  position:relative;
+}
+.exec-quote-text::before {
+  content:'“';
+  font-size:2.2rem;
+  color:#10b981;
+  line-height:0;
+  vertical-align:-0.4rem;
+  margin-right:4px;
+  font-family:serif;
+}
+.exec-quote-text::after {
+  content:'”';
+  font-size:2.2rem;
+  color:#10b981;
+  line-height:0;
+  vertical-align:-0.4rem;
+  margin-left:4px;
+  font-family:serif;
+}
+
 .exec-quote-box { padding:16px 20px; font-style:italic; font-size:0.92rem; color:#334155; line-height:1.6; background:#f8fafc; position:relative; }
 .exec-bullet-box { padding:14px 20px; line-height:1.8; font-size:0.88rem; color:#334155; background:#ffffff; }
 .exec-bullet-box ul { padding-left:20px; margin:0; }
@@ -536,21 +952,15 @@ input:checked + .slider:before { transform:translateX(18px); }
 .exec-priority-num { font-size:1.35rem; font-weight:800; color:#059669; font-family:'Space Grotesk',sans-serif; line-height:1; min-width:28px; }
 .exec-s-s-c-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; padding:16px 20px; background:#ffffff; }
 .exec-s-s-c-card { border:1px solid #e2e8f0; border-radius:8px; padding:14px 12px; background:#f8fafc; text-align:center; }
-.exec-subtabs { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
-.exec-subtab-btn { padding:7px 16px; border-radius:8px; border:1.5px solid var(--border); background:var(--surface); color:var(--text2); font-weight:700; font-size:0.82rem; cursor:pointer; transition:0.18s; font-family:inherit; }
-.exec-subtab-btn.active { background:#1e3a5f; color:#ffffff; border-color:#1e3a5f; box-shadow:0 2px 8px rgba(30,58,95,0.25); }
 .exec-fill-line { display:inline-block; border-bottom:1.5px solid #94a3b8; min-width:140px; margin:0 4px; vertical-align:bottom; height:18px; }
 
 /* Interactive Clickable & Pop-up Hover Styles */
 .exec-clickable { cursor:pointer !important; transition:all 0.18s ease !important; user-select:none; position:relative; }
-.exec-table td.exec-clickable:hover { background:#f0fdf4 !important; color:#064e3b !important; font-weight:700; outline:2px solid #059669; outline-offset:-2px; }
-.exec-glance-card.exec-clickable:hover { transform:translateY(-3px); border-color:#0284c7; box-shadow:0 6px 16px rgba(2,132,199,0.18); background:#f0f9ff; }
-.exec-cat-card.exec-clickable { padding:8px 12px; border-radius:8px; border:1px solid transparent; transition:all 0.18s ease; cursor:pointer; }
-.exec-cat-card.exec-clickable:hover { background:#f8fafc; border-color:#cbd5e1; transform:translateX(4px); }
+.exec-cat-card.exec-clickable { padding:10px 14px; border-radius:10px; border:1px solid #f1f5f9; transition:all 0.18s ease; cursor:pointer; }
 .exec-quote-box.exec-clickable:hover { background:#f1f5f9; outline:1.5px dashed #0284c7; cursor:pointer; }
 
 /* Page 2 Editable Elements */
-.exec-toolbar { display:flex; align-items:center; justify-content:space-between; padding:10px 18px; background:#f8fafc; border-bottom:1px solid #e2e8f0; flex-wrap:wrap; gap:10px; }
+.exec-toolbar { display:flex; align-items:center; justify-content:space-between; padding:12px 20px; background:#f8fafc; border-bottom:1px solid #e2e8f0; flex-wrap:wrap; gap:10px; }
 .exec-bullet-item { display:flex; align-items:flex-start; gap:8px; margin-bottom:8px; }
 .exec-bullet-bullet { font-size:1.1rem; line-height:1.4; color:#64748b; flex-shrink:0; font-weight:800; }
 .exec-bullet-input { flex:1; border:1.5px solid #e2e8f0; border-radius:6px; padding:6px 10px; font-family:inherit; font-size:0.88rem; color:#1e293b; background:#ffffff; line-height:1.5; transition:all 0.15s; outline:none; }
@@ -591,16 +1001,31 @@ input:checked + .slider:before { transform:translateX(18px); }
       <div class="brand-sub">Enterprise Resource Platform</div>
     </div>
     <div class="login-card">
-      <h3>Enter Access PIN</h3>
-      <div class="pin-display" id="pin-display">
-        <div class="pin-dot" id="pd0"></div>
-        <div class="pin-dot" id="pd1"></div>
-        <div class="pin-dot" id="pd2"></div>
-        <div class="pin-dot" id="pd3"></div>
-        <div class="pin-dot" id="pd4"></div>
+      <div style="font-size:1.6rem; margin-bottom:8px;">🔐</div>
+      <h3 style="color:white; font-size:1.05rem; letter-spacing:0.5px; margin-bottom:4px; font-weight:700;">Account Sign In</h3>
+      <p style="color:rgba(255,255,255,0.5); font-size:0.75rem; margin-bottom:18px;">Enter your authorized staff or admin credentials</p>
+      
+      <div id="login-error" style="display:none; color:#fca5a5; background:rgba(239,68,68,0.18); border:1.5px solid rgba(239,68,68,0.35); border-radius:10px; padding:10px 14px; font-size:0.78rem; margin-bottom:16px; text-align:left; line-height:1.4;"></div>
+      
+      <div style="margin-bottom:14px; text-align:left;">
+        <label style="display:block; font-size:0.68rem; font-weight:700; color:rgba(255,255,255,0.65); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">Staff / Admin Email</label>
+        <input type="email" id="login-email" class="login-auth-input" placeholder="e.g. counter@skylime.in" autocomplete="username" onkeyup="if(event.key==='Enter')document.getElementById('login-pass').focus()">
       </div>
-      <input type="password" id="login-pass" class="login-input" placeholder="PIN" maxlength="20" oninput="updatePinDots()" onkeyup="if(event.key==='Enter')handleLogin()">
-      <button class="login-btn" onclick="handleLogin()">ACCESS SYSTEM →</button>
+
+      <div style="margin-bottom:20px; text-align:left;">
+        <label style="display:block; font-size:0.68rem; font-weight:700; color:rgba(255,255,255,0.65); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;">Password</label>
+        <div style="position:relative;">
+          <input type="password" id="login-pass" class="login-auth-input" placeholder="••••••••" autocomplete="current-password" onkeyup="if(event.key==='Enter')handleLogin()">
+          <button type="button" onclick="toggleLoginPassword()" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; color:rgba(255,255,255,0.6); cursor:pointer; font-size:0.95rem;" id="login-eye-btn" title="Toggle password visibility">👁️</button>
+        </div>
+      </div>
+
+      <button class="login-btn" id="login-submit-btn" onclick="handleLogin()">SIGN IN TO SYSTEM →</button>
+      
+      <div style="margin-top:16px; font-size:0.7rem; color:rgba(255,255,255,0.4); line-height:1.5;">
+        🔒 Authenticated via Google Firebase<br>
+        Role permissions &amp; cloud sync are verified on Google servers.
+      </div>
     </div>
   </div>
 </div>
@@ -654,7 +1079,7 @@ input:checked + .slider:before { transform:translateX(18px); }
         <div class="u-role" id="user-role">Administrator</div>
       </div>
     </div>
-    <button class="logout-btn" onclick="location.reload()">🔒 Logout Session</button>
+    <button class="logout-btn" onclick="handleLogout()">🔒 Sign Out</button>
   </div>
 </aside>
 
@@ -672,299 +1097,375 @@ input:checked + .slider:before { transform:translateX(18px); }
     </div>
   </div>
 
-  <!-- ===== DASHBOARD: SIX MONTH REVIEW & LEARNINGS ===== -->
-  <div id="dashboard" class="tab-content admin-only" style="padding:20px 28px; overflow-y:auto; height:calc(100vh - 66px);">
-    <div class="page-header" style="margin-bottom:20px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px;">
-      <div>
-        <h1 style="font-size:1.6rem; font-weight:800; color:var(--text); margin-bottom:4px;">Executive Review — First Six Months</h1>
-        <p style="color:var(--text2); font-size:0.85rem;">7 April – 30 September 2026 &bull; Performance Snapshot, Learnings &amp; Priorities</p>
-      </div>
-      <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-        <div class="exec-subtabs">
-          <button class="exec-subtab-btn active" id="btn-exec-p1" onclick="setExecPage('p1')">📄 Page 1 - Six Month Snapshot</button>
-          <button class="exec-subtab-btn" id="btn-exec-p2" onclick="setExecPage('p2')">📋 Page 2 - Learnings &amp; Priorities</button>
-          <button class="exec-subtab-btn" id="btn-exec-all" onclick="setExecPage('all')">📑 View Full Report</button>
-        </div>
-        <button class="btn btn-primary" onclick="exportExecutiveReportExcel()" style="display:inline-flex; align-items:center; gap:6px; background:#1e3a5f; border-color:#1e3a5f;">
-          📊 Export to Excel (2 Sheets)
-        </button>
-        <button class="btn btn-ghost" onclick="printExecReport()" style="display:inline-flex; align-items:center; gap:6px;">
-          🖨️ Print Report
-        </button>
-      </div>
-    </div>
+  <!-- ===== DASHBOARD: EXECUTIVE REVIEW & INTELLIGENCE ===== -->
+  <div id="dashboard" class="tab-content admin-only" style="padding:24px 32px; overflow-y:auto; height:calc(100vh - 66px);">
+    <div class="exec-wrapper">
 
-    <!-- PAGE 1: SIX MONTH SNAPSHOT -->
-    <div id="exec-page-1" class="exec-container">
-      <div class="exec-banner" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
-        <div>
-          <h2>SKYLIME | OUR FIRST SIX MONTHS</h2>
-          <p>7 April – 30 September 2026 &nbsp;|&nbsp; Live ERP Data &bull; Click any metric or cell to drill down into underlying transactions</p>
-        </div>
-        <div style="font-size:0.75rem; background:rgba(255,255,255,0.15); padding:6px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.25);">
-          🟢 Live Sync: <span id="exec-live-sync-status">Calculated from Invoices</span>
-        </div>
-      </div>
-
-      <!-- Monthly Performance Table -->
-      <div class="table-wrap" style="overflow-x:auto;">
-        <table class="exec-table">
-          <thead>
-            <tr>
-              <th style="text-align:left;">Month</th>
-              <th style="text-align:right;">Revenue (₹)</th>
-              <th style="text-align:right;">Expenses (₹)</th>
-              <th style="text-align:center;">Kids Served</th>
-              <th style="text-align:center;">Activities / Sessions</th>
-              <th style="text-align:center;">Birthdays / Events</th>
-              <th style="text-align:center;">Repeat Families %</th>
-              <th style="text-align:center;">Staff</th>
-            </tr>
-          </thead>
-          <tbody id="exec-table-body">
-            <!-- Dynamically populated by renderExecDashboard() from live sales & DB -->
-          </tbody>
-        </table>
-      </div>
-
-      <!-- AT A GLANCE -->
-      <div class="exec-section-navy" style="display:flex; justify-content:space-between; align-items:center;">
-        <span>AT A GLANCE</span>
-        <span style="font-size:0.7rem; font-weight:400; color:#cbd5e1; text-transform:none;">Click any card to open detailed breakdown</span>
-      </div>
-      <div class="exec-glance-grid">
-        <div class="exec-glance-card exec-clickable" onclick="openExecDrilldown('revenue', 'all', 'All 6 Months Total')" title="Click to view all 6-month transactions">
-          <div class="label">Total Revenue</div>
-          <div class="val" id="exec-glance-rev">₹0</div>
-          <div style="font-size:0.65rem; color:var(--teal); margin-top:2px;">🔍 View Invoices</div>
-        </div>
-        <div class="exec-glance-card exec-clickable" onclick="openExecDrilldown('kids', 'all', 'All 6 Months Total')" title="Click to view all children served">
-          <div class="label">Kids Served</div>
-          <div class="val" id="exec-glance-kids">0</div>
-          <div style="font-size:0.65rem; color:var(--teal); margin-top:2px;">🔍 View Kids List</div>
-        </div>
-        <div class="exec-glance-card exec-clickable" onclick="openExecDrilldown('repeat', 'all', 'All 6 Months Total')" title="Click to view repeat families analysis">
-          <div class="label">Repeat Families</div>
-          <div class="val" style="color:#059669;" id="exec-glance-repeat">0%</div>
-          <div style="font-size:0.65rem; color:var(--teal); margin-top:2px;">🔍 View Families</div>
-        </div>
-        <div class="exec-glance-card exec-clickable" onclick="openExecStaffModal('2026-09', 'Current Team (September 2026)')" title="Click to view/edit staff details">
-          <div class="label">Current Team</div>
-          <div class="val" id="exec-glance-team">7</div>
-          <div style="font-size:0.65rem; color:var(--teal); margin-top:2px;">✏️ Edit Team</div>
-        </div>
-        <div class="exec-glance-card exec-clickable" onclick="openExecDrilldown('activities', 'all', 'All 6 Months Total')" title="Click to view all activities/sessions">
-          <div class="label">Activities / Sessions</div>
-          <div class="val" id="exec-glance-sessions">0</div>
-          <div style="font-size:0.65rem; color:var(--teal); margin-top:2px;">🔍 View Sessions</div>
-        </div>
-        <div class="exec-glance-card exec-clickable" onclick="openExecDrilldown('birthdays', 'all', 'All 6 Months Total')" title="Click to view birthday bookings">
-          <div class="label">Birthdays / Events</div>
-          <div class="val" id="exec-glance-birthdays">0</div>
-          <div style="font-size:0.65rem; color:var(--teal); margin-top:2px;">🔍 View Events</div>
-        </div>
-        <div class="exec-glance-card exec-clickable" onclick="openExecDrilldown('revenue', '2026-09', 'September 2026')" title="Click to view September transactions">
-          <div class="label">September Revenue</div>
-          <div class="val" style="color:var(--teal);" id="exec-glance-seprev">₹0</div>
-          <div style="font-size:0.65rem; color:var(--teal); margin-top:2px;">🔍 September Sales</div>
-        </div>
-        <div class="exec-glance-card exec-clickable" onclick="openExecOperatingGapModal('2026-09', 'September 2026')" title="Click to view Operating Gap & Margin Analysis">
-          <div class="label">Monthly Operating Gap</div>
-          <div class="val" style="color:var(--accent);" id="exec-glance-gap">₹0</div>
-          <div style="font-size:0.65rem; color:var(--teal); margin-top:2px;">🔍 P&amp;L Analysis</div>
-        </div>
-      </div>
-
-      <!-- THE SIX-MONTH STORY IN ONE SENTENCE -->
-      <div class="exec-section-slate" style="display:flex; justify-content:space-between; align-items:center;">
-        <span>THE SIX-MONTH STORY IN ONE SENTENCE</span>
-        <span style="font-size:0.7rem; color:#64748b; text-transform:none;">Click to edit</span>
-      </div>
-      <div class="exec-quote-box exec-clickable" onclick="openExecStoryModal()" title="Click to edit headline story">
-        &ldquo;<span id="exec-quote-text">Skylime has moved from launch and experimentation to building a base of repeat families, a stronger activity calendar and growing birthday/event traction.</span>&rdquo;
-        <span style="font-size:0.75rem; color:#0284c7; margin-left:8px; font-style:normal; font-weight:700;">✏️ Edit</span>
-      </div>
-
-      <!-- WHAT ARE FAMILIES COMING FOR? -->
-      <div class="exec-section-slate" style="display:flex; justify-content:space-between; align-items:center;">
-        <span>WHAT ARE FAMILIES COMING FOR?</span>
-        <span style="font-size:0.7rem; color:#64748b; text-transform:none;">Calculated live from items billed &bull; Click any category to view transactions</span>
-      </div>
-      <div style="padding:16px 20px; background:#ffffff;">
-        <div style="display:flex; flex-direction:column; gap:12px; max-width:640px;">
-          <div class="exec-cat-card exec-clickable" onclick="openExecCategoryDrilldown('open_play', 'Open Play')" title="Click to view all Open Play transactions">
-            <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700; margin-bottom:4px;">
-              <span>Open Play</span><span style="font-family:'Space Grotesk',sans-serif;" id="exec-cat-openplay-pct">45%</span>
-            </div>
-            <div style="height:10px; background:#e2e8f0; border-radius:99px; overflow:hidden;">
-              <div id="exec-cat-openplay-bar" style="width:45%; height:100%; background:#1e3a5f; border-radius:99px; transition:width 0.4s ease;"></div>
-            </div>
+      <!-- EXECUTIVE COMMAND BAR (Unified Header & Time Horizon Controls) -->
+      <div class="exec-command-bar">
+        <!-- Top Row: Title, Subtitle, Live Badge & Actions -->
+        <div class="exec-header-row">
+          <div class="exec-title-group">
+            <h1 id="exec-header-title">Executive Review — First Six Months</h1>
+            <p>
+              <span id="exec-header-subtitle">7 April – 30 September 2026 &bull; Performance Snapshot, Learnings &amp; Priorities</span>
+              <span class="exec-live-badge" title="Live calculation from ERP invoices">🟢 <span id="exec-live-sync-status">Calculated from Invoices</span></span>
+            </p>
           </div>
-          <div class="exec-cat-card exec-clickable" onclick="openExecCategoryDrilldown('activities', 'Activities & Workshops')" title="Click to view all Activities / Workshop transactions">
-            <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700; margin-bottom:4px;">
-              <span>Activities / Workshops</span><span style="font-family:'Space Grotesk',sans-serif;" id="exec-cat-act-pct">30%</span>
-            </div>
-            <div style="height:10px; background:#e2e8f0; border-radius:99px; overflow:hidden;">
-              <div id="exec-cat-act-bar" style="width:30%; height:100%; background:var(--teal); border-radius:99px; transition:width 0.4s ease;"></div>
-            </div>
+          <div class="exec-header-actions">
+            <button class="btn btn-primary" onclick="exportExecutiveReportExcel()" style="display:inline-flex; align-items:center; gap:7px; background:var(--brand); border-color:var(--brand); font-weight:700;">
+              📊 Export to Excel (2 Sheets)
+            </button>
+            <button class="btn btn-ghost" onclick="printExecReport()" style="display:inline-flex; align-items:center; gap:6px; font-weight:600;">
+              🖨️ Print Report
+            </button>
           </div>
-          <div class="exec-cat-card exec-clickable" onclick="openExecCategoryDrilldown('birthdays', 'Birthdays & Events')" title="Click to view all Birthday / Event bookings">
-            <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700; margin-bottom:4px;">
-              <span>Birthdays / Events</span><span style="font-family:'Space Grotesk',sans-serif;" id="exec-cat-bday-pct">20%</span>
-            </div>
-            <div style="height:10px; background:#e2e8f0; border-radius:99px; overflow:hidden;">
-              <div id="exec-cat-bday-bar" style="width:20%; height:100%; background:var(--gold); border-radius:99px; transition:width 0.4s ease;"></div>
-            </div>
+        </div>
+
+        <!-- Bottom Row: Navigation Tabs & Time Horizon Controls -->
+        <div class="exec-controls-row">
+          <div class="exec-subtabs">
+            <button class="exec-subtab-btn active" id="btn-exec-p1" onclick="setExecPage('p1')">📄 Page 1 - Six Month Snapshot</button>
+            <button class="exec-subtab-btn" id="btn-exec-p2" onclick="setExecPage('p2')">📋 Page 2 - Learnings &amp; Priorities</button>
+            <button class="exec-subtab-btn" id="btn-exec-all" onclick="setExecPage('all')">📑 View Full Report</button>
           </div>
-          <div class="exec-cat-card exec-clickable" onclick="openExecCategoryDrilldown('other', 'Other Products & Services')" title="Click to view other retail / food / goods sales">
-            <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:700; margin-bottom:4px;">
-              <span>Other</span><span style="font-family:'Space Grotesk',sans-serif;" id="exec-cat-other-pct">5%</span>
+
+          <div class="exec-horizon-group">
+            <div class="exec-period-pills">
+              <button type="button" class="exec-period-btn" id="btn-period-monthly" onclick="setDashboardPeriod('monthly')">📅 Monthly</button>
+              <button type="button" class="exec-period-btn" id="btn-period-quarterly" onclick="setDashboardPeriod('quarterly')">📊 Quarterly</button>
+              <button type="button" class="exec-period-btn active" id="btn-period-semiannual" onclick="setDashboardPeriod('semiannual')">🎯 Semi-Annual</button>
+              <button type="button" class="exec-period-btn" id="btn-period-annual" onclick="setDashboardPeriod('annual')">📈 Annual (Full FY)</button>
             </div>
-            <div style="height:10px; background:#e2e8f0; border-radius:99px; overflow:hidden;">
-              <div id="exec-cat-other-bar" style="width:5%; height:100%; background:#94a3b8; border-radius:99px; transition:width 0.4s ease;"></div>
+
+            <!-- Month Sub-selector (Visible when 'Monthly' is active) -->
+            <div id="exec-month-subselector" style="display:none; align-items:center; gap:6px; flex-wrap:wrap;">
+              <span style="font-size:0.72rem; font-weight:700; color:var(--text2); text-transform:uppercase;">Month:</span>
+              <div id="exec-month-pills" style="display:inline-flex; gap:4px; flex-wrap:wrap;"></div>
+            </div>
+
+            <!-- Active Period Tag -->
+            <div id="exec-period-chip" class="exec-period-chip">
+              📍 Semi-Annual Snapshot (Apr – Sep 2026)
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- PAGE 2: LEARNINGS & PRIORITIES -->
-    <div id="exec-page-2" class="exec-container" style="display:none;">
-      <div class="exec-banner">
-        <h2>SKYLIME | WHAT WE HAVE LEARNT &amp; WHAT COMES NEXT</h2>
-        <p>Interactive discussion document &bull; All fields are editable and saved directly into ERP database</p>
-      </div>
-
-      <!-- Action Toolbar -->
-      <div class="exec-toolbar">
-        <div style="display:flex; align-items:center; gap:8px;">
-          <button class="btn btn-success btn-sm" onclick="saveExecLearnings()" style="display:inline-flex; align-items:center; gap:5px; font-weight:700;">
-            💾 Save Learnings &amp; Priorities
-          </button>
-          <button class="btn btn-ghost btn-sm" onclick="resetExecLearnings()" style="font-size:0.78rem;">
-            ↺ Reset Template
-          </button>
+      <!-- PAGE 1: SNAPSHOT -->
+      <div id="exec-page-1" class="exec-container">
+        <!-- Context Banner Strip -->
+        <div class="exec-banner">
+          <div>
+            <h2 id="exec-banner-title">SKYLIME | OUR FIRST SIX MONTHS</h2>
+            <p id="exec-banner-sub">7 April – 30 September 2026 &nbsp;|&nbsp; Live ERP Data &bull; Click any metric or cell to drill down into underlying transactions</p>
+          </div>
+          <div style="font-size:0.76rem; color:rgba(255,255,255,0.75); display:flex; align-items:center; gap:6px;">
+            <span>💡 Click any card or cell for instant drilldown</span>
+          </div>
         </div>
-        <div id="exec-save-status" style="font-size:0.75rem; color:#059669; font-weight:600;">
-          ✅ All changes saved
+
+        <!-- 8 AT A GLANCE KPI CARDS -->
+        <div class="exec-section-bar">
+          <div class="exec-section-title">⚡ AT A GLANCE &bull; EXECUTIVE METRICS</div>
+          <div class="exec-section-hint">Click any card to inspect individual customer bills and audit transactions</div>
+        </div>
+        <div class="exec-glance-grid">
+          <div class="exec-glance-card exec-clickable" id="card-glance-rev" onclick="openExecGlanceDrilldown('rev')" title="Click to view transactions">
+            <div class="label"><span id="exec-glance-rev-label">Total Revenue</span><span>💰</span></div>
+            <div class="val" id="exec-glance-rev">₹0</div>
+            <div class="sub-hint"><span>Invoices billed &bull; Drilldown</span><span>→</span></div>
+          </div>
+          <div class="exec-glance-card exec-clickable" id="card-glance-kids" onclick="openExecGlanceDrilldown('kids')" title="Click to view children served">
+            <div class="label"><span id="exec-glance-kids-label">Kids Served</span><span>🧒</span></div>
+            <div class="val" id="exec-glance-kids">0</div>
+            <div class="sub-hint"><span>Registered children &bull; Drilldown</span><span>→</span></div>
+          </div>
+          <div class="exec-glance-card exec-clickable" id="card-glance-repeat" onclick="openExecGlanceDrilldown('repeat')" title="Click to view repeat families analysis">
+            <div class="label"><span id="exec-glance-repeat-label">Repeat Families</span><span>🔄</span></div>
+            <div class="val" style="color:#059669;" id="exec-glance-repeat">0%</div>
+            <div class="sub-hint"><span>Loyalty retention &bull; Drilldown</span><span>→</span></div>
+          </div>
+          <div class="exec-glance-card exec-clickable" id="card-glance-team" onclick="openExecGlanceDrilldown('team')" title="Click to view/edit staff details">
+            <div class="label"><span id="exec-glance-team-label">Current Team</span><span>👥</span></div>
+            <div class="val" id="exec-glance-team">7</div>
+            <div class="sub-hint"><span>Operations headcount &bull; Manage</span><span>✏️</span></div>
+          </div>
+          <div class="exec-glance-card exec-clickable" id="card-glance-sessions" onclick="openExecGlanceDrilldown('activities')" title="Click to view activities/sessions">
+            <div class="label"><span id="exec-glance-sessions-label">Activities / Sessions</span><span>🎨</span></div>
+            <div class="val" id="exec-glance-sessions">0</div>
+            <div class="sub-hint"><span>Workshops &amp; play slots &bull; Drilldown</span><span>→</span></div>
+          </div>
+          <div class="exec-glance-card exec-clickable" id="card-glance-birthdays" onclick="openExecGlanceDrilldown('birthdays')" title="Click to view birthday bookings">
+            <div class="label"><span id="exec-glance-birthdays-label">Birthdays / Events</span><span>🎉</span></div>
+            <div class="val" id="exec-glance-birthdays">0</div>
+            <div class="sub-hint"><span>Private parties booked &bull; Drilldown</span><span>→</span></div>
+          </div>
+          <div class="exec-glance-card exec-clickable" id="card-glance-bench" onclick="openExecGlanceDrilldown('bench')" title="Click to view benchmark transactions">
+            <div class="label"><span id="exec-glance-bench-label">September Revenue</span><span>📈</span></div>
+            <div class="val" style="color:var(--teal);" id="exec-glance-seprev">₹0</div>
+            <div class="sub-hint"><span>Run-rate benchmark &bull; Drilldown</span><span>→</span></div>
+          </div>
+          <div class="exec-glance-card exec-clickable" id="card-glance-gap" onclick="openExecGlanceDrilldown('gap')" title="Click to view Operating Gap & Margin Analysis">
+            <div class="label"><span id="exec-glance-gap-label">Monthly Operating Gap</span><span>⚖️</span></div>
+            <div class="val" style="color:var(--accent);" id="exec-glance-gap">₹0</div>
+            <div class="sub-hint"><span>Revenue vs Expenses &bull; P&amp;L</span><span>→</span></div>
+          </div>
+        </div>
+
+        <!-- Performance Table Section -->
+        <div class="exec-section-bar" style="border-top:1px solid #f1f5f9;">
+          <div class="exec-section-title">📊 Operational Breakdown &bull; Period Ledger</div>
+          <div class="exec-section-hint">Click any cell to inspect breakdown or edit actual monthly expenses</div>
+        </div>
+        <div class="exec-table-wrap">
+          <table class="exec-table">
+            <thead id="exec-table-head">
+              <tr>
+                <th style="text-align:left;">Month</th>
+                <th style="text-align:right;">Revenue (₹)</th>
+                <th style="text-align:right;">Expenses (₹)</th>
+                <th style="text-align:center;">Kids Served</th>
+                <th style="text-align:center;">Activities / Sessions</th>
+                <th style="text-align:center;">Birthdays / Events</th>
+                <th style="text-align:center;">Repeat Families %</th>
+                <th style="text-align:center;">Staff</th>
+              </tr>
+            </thead>
+            <tbody id="exec-table-body">
+              <!-- Dynamically populated by renderExecDashboard() -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Symmetrical 2-Column Bottom Analytics Grid -->
+        <div class="exec-bottom-grid">
+          <!-- Left Column: What Are Families Coming For? -->
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+              <div>
+                <h3 id="exec-cat-heading" style="font-size:0.92rem; font-weight:800; color:var(--brand); font-family:'Space Grotesk',sans-serif; text-transform:uppercase; letter-spacing:0.4px; margin:0 0 3px;">WHAT ARE FAMILIES COMING FOR?</h3>
+                <p id="exec-cat-subheading" style="font-size:0.75rem; color:var(--text2); margin:0;">Revenue share by offering &bull; Click any category to view transactions</p>
+              </div>
+            </div>
+            <div class="exec-cat-container">
+              <div class="exec-cat-card exec-clickable" onclick="openExecCategoryDrilldown('open_play', 'Open Play')" title="Click to view all Open Play transactions">
+                <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.86rem; font-weight:700;">
+                  <span style="display:flex; align-items:center; gap:8px;">🛝 <span>Open Play</span></span>
+                  <span style="font-family:'Space Grotesk',sans-serif; color:var(--brand); font-weight:800;" id="exec-cat-openplay-pct">45%</span>
+                </div>
+                <div class="exec-cat-track">
+                  <div id="exec-cat-openplay-bar" style="width:45%; height:100%; background:var(--brand); border-radius:99px; transition:width 0.4s ease;"></div>
+                </div>
+              </div>
+              <div class="exec-cat-card exec-clickable" onclick="openExecCategoryDrilldown('activities', 'Activities & Workshops')" title="Click to view all Activities / Workshop transactions">
+                <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.86rem; font-weight:700;">
+                  <span style="display:flex; align-items:center; gap:8px;">🎨 <span>Activities &amp; Workshops</span></span>
+                  <span style="font-family:'Space Grotesk',sans-serif; color:var(--teal); font-weight:800;" id="exec-cat-act-pct">30%</span>
+                </div>
+                <div class="exec-cat-track">
+                  <div id="exec-cat-act-bar" style="width:30%; height:100%; background:var(--teal); border-radius:99px; transition:width 0.4s ease;"></div>
+                </div>
+              </div>
+              <div class="exec-cat-card exec-clickable" onclick="openExecCategoryDrilldown('birthdays', 'Birthdays & Events')" title="Click to view all Birthday / Event bookings">
+                <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.86rem; font-weight:700;">
+                  <span style="display:flex; align-items:center; gap:8px;">🎉 <span>Birthdays &amp; Celebrations</span></span>
+                  <span style="font-family:'Space Grotesk',sans-serif; color:var(--gold); font-weight:800;" id="exec-cat-bday-pct">20%</span>
+                </div>
+                <div class="exec-cat-track">
+                  <div id="exec-cat-bday-bar" style="width:20%; height:100%; background:var(--gold); border-radius:99px; transition:width 0.4s ease;"></div>
+                </div>
+              </div>
+              <div class="exec-cat-card exec-clickable" onclick="openExecCategoryDrilldown('other', 'Other Products & Services')" title="Click to view other retail / food / goods sales">
+                <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.86rem; font-weight:700;">
+                  <span style="display:flex; align-items:center; gap:8px;">🛍️ <span>Retail &amp; Other Services</span></span>
+                  <span style="font-family:'Space Grotesk',sans-serif; color:#64748b; font-weight:800;" id="exec-cat-other-pct">5%</span>
+                </div>
+                <div class="exec-cat-track">
+                  <div id="exec-cat-other-bar" style="width:5%; height:100%; background:#94a3b8; border-radius:99px; transition:width 0.4s ease;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Strategic Executive Narrative -->
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+              <div>
+                <h3 id="exec-story-heading" style="font-size:0.92rem; font-weight:800; color:var(--brand); font-family:'Space Grotesk',sans-serif; text-transform:uppercase; letter-spacing:0.4px; margin:0 0 3px;">THE SIX-MONTH STORY IN ONE SENTENCE</h3>
+                <p style="font-size:0.75rem; color:var(--text2); margin:0;">Synthesized strategic narrative &bull; Click card to edit headline story</p>
+              </div>
+            </div>
+            <div class="exec-story-card exec-clickable" onclick="openExecStoryModal()" title="Click to edit headline story">
+              <p class="exec-quote-text" id="exec-quote-text">
+                Skylime has moved from launch and experimentation to building a base of repeat families, a stronger activity calendar and growing birthday/event traction.
+              </p>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding-top:14px; border-top:1px dashed #cbd5e1;">
+                <span style="font-size:0.75rem; color:#059669; font-weight:700; display:flex; align-items:center; gap:5px;">
+                  ✨ Reflected in Board &amp; Excel Reports
+                </span>
+                <span style="font-size:0.76rem; color:var(--teal); font-weight:700; display:flex; align-items:center; gap:4px;">
+                  ✏️ Click to Edit Story
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- WHAT WENT WELL -->
-      <div class="exec-section-slate" style="display:flex; justify-content:space-between; align-items:center;">
-        <span>WHAT WENT WELL</span>
-        <button class="exec-add-bullet-btn" onclick="addExecBullet('wentWell')">+ Add Point</button>
-      </div>
-      <div class="exec-bullet-box" id="exec-edit-went-well">
-        <!-- Populated dynamically by renderExecPage2() -->
-      </div>
-
-      <!-- WHAT NEEDS TO IMPROVE -->
-      <div class="exec-section-amber" style="display:flex; justify-content:space-between; align-items:center;">
-        <span>WHAT NEEDS TO IMPROVE</span>
-        <button class="exec-add-bullet-btn" onclick="addExecBullet('needsImprove')">+ Add Point</button>
-      </div>
-      <div class="exec-bullet-box" style="background:#fffbeb;" id="exec-edit-needs-improve">
-        <!-- Populated dynamically by renderExecPage2() -->
-      </div>
-
-      <!-- WHAT WE HAVE LEARNT ABOUT OUR FAMILIES -->
-      <div class="exec-section-slate" style="display:flex; justify-content:space-between; align-items:center;">
-        <span>WHAT WE HAVE LEARNT ABOUT OUR FAMILIES</span>
-        <span style="font-size:0.72rem; color:#64748b; text-transform:none;">Use analytics shortcuts to auto-fill</span>
-      </div>
-      <div style="padding:16px 20px; background:#ffffff; font-size:0.88rem; color:#334155;">
-        <div class="exec-field-row">
-          <span class="exec-field-label">Most loved activity / format:</span>
-          <input type="text" id="exec-f-loved" class="exec-input" style="flex:1; min-width:260px;" placeholder="e.g. Sensory Workshops, Messy Play" oninput="onExecPage2Change()">
-          <button class="exec-suggest-btn" onclick="suggestTopActivities()">📊 Top Activities</button>
+      <!-- PAGE 2: LEARNINGS & PRIORITIES -->
+      <div id="exec-page-2" class="exec-container" style="display:none;">
+        <div class="exec-banner">
+          <div>
+            <h2>SKYLIME | WHAT WE HAVE LEARNT &amp; WHAT COMES NEXT</h2>
+            <p>Interactive strategic roadmap &bull; All fields are editable and saved directly into ERP database</p>
+          </div>
+          <div style="font-size:0.76rem; color:rgba(255,255,255,0.75);">
+            📝 Auto-saves as you type
+          </div>
         </div>
-        <div style="display:flex; flex-wrap:wrap; gap:20px; align-items:center; margin-bottom:12px;">
+
+        <!-- Action Toolbar -->
+        <div class="exec-toolbar">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <button class="btn btn-success btn-sm" onclick="saveExecLearnings()" style="display:inline-flex; align-items:center; gap:5px; font-weight:700;">
+              💾 Save Learnings &amp; Priorities
+            </button>
+            <button class="btn btn-ghost btn-sm" onclick="resetExecLearnings()" style="font-size:0.78rem;">
+              ↺ Reset Template
+            </button>
+          </div>
+          <div id="exec-save-status" style="font-size:0.75rem; color:#059669; font-weight:600;">
+            ✅ All changes saved
+          </div>
+        </div>
+
+        <!-- WHAT WENT WELL -->
+        <div class="exec-section-slate">
+          <span style="display:flex; align-items:center; gap:8px;">🌟 WHAT WENT WELL</span>
+          <button class="exec-add-bullet-btn" onclick="addExecBullet('wentWell')">+ Add Point</button>
+        </div>
+        <div class="exec-bullet-box" id="exec-edit-went-well">
+          <!-- Populated dynamically by renderExecPage2() -->
+        </div>
+
+        <!-- WHAT NEEDS TO IMPROVE -->
+        <div class="exec-section-amber">
+          <span style="display:flex; align-items:center; gap:8px;">⚠️ WHAT NEEDS TO IMPROVE</span>
+          <button class="exec-add-bullet-btn" onclick="addExecBullet('needsImprove')">+ Add Point</button>
+        </div>
+        <div class="exec-bullet-box" style="background:#fffdf7;" id="exec-edit-needs-improve">
+          <!-- Populated dynamically by renderExecPage2() -->
+        </div>
+
+        <!-- WHAT WE HAVE LEARNT ABOUT OUR FAMILIES -->
+        <div class="exec-section-slate">
+          <span style="display:flex; align-items:center; gap:8px;">👨‍👩‍👧‍👦 WHAT WE HAVE LEARNT ABOUT OUR FAMILIES</span>
+          <span style="font-size:0.72rem; color:#64748b; text-transform:none; font-weight:500;">Use analytics shortcuts to auto-fill</span>
+        </div>
+        <div style="padding:20px 24px; background:#ffffff; font-size:0.88rem; color:#334155;">
+          <div class="exec-field-row">
+            <span class="exec-field-label">Most loved activity / format:</span>
+            <input type="text" id="exec-f-loved" class="exec-input" style="flex:1; min-width:260px;" placeholder="e.g. Sensory Workshops, Messy Play" oninput="onExecPage2Change()">
+            <button class="exec-suggest-btn" onclick="suggestTopActivities()">📊 Top Activities</button>
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:20px; align-items:center; margin-bottom:12px;">
+            <div class="exec-field-row" style="margin-bottom:0;">
+              <span class="exec-field-label">Most common age group:</span>
+              <input type="text" id="exec-f-age" class="exec-input" style="width:140px;" placeholder="e.g. 2 – 6 Years" oninput="onExecPage2Change()">
+              <button class="exec-suggest-btn" onclick="analyzeKidsAges()">📊 Age Analysis</button>
+            </div>
+            <div class="exec-field-row" style="margin-bottom:0;">
+              <span class="exec-field-label">Biggest source of new families:</span>
+              <input type="text" id="exec-f-source" class="exec-input" style="width:200px;" placeholder="e.g. Word of Mouth, Instagram" oninput="onExecPage2Change()">
+            </div>
+          </div>
+          <div class="exec-field-row">
+            <span class="exec-field-label">What parents value most:</span>
+            <input type="text" id="exec-f-value" class="exec-input" style="flex:1; min-width:280px;" placeholder="e.g. Attentive facilitators, clean environment, engaging toys" oninput="onExecPage2Change()">
+          </div>
           <div class="exec-field-row" style="margin-bottom:0;">
-            <span class="exec-field-label">Most common age group:</span>
-            <input type="text" id="exec-f-age" class="exec-input" style="width:140px;" placeholder="e.g. 2 – 6 Years" oninput="onExecPage2Change()">
-            <button class="exec-suggest-btn" onclick="analyzeKidsAges()">📊 Age Analysis</button>
+            <span class="exec-field-label">Most common feedback / request:</span>
+            <input type="text" id="exec-f-feedback" class="exec-input" style="flex:1; min-width:280px;" placeholder="e.g. Longer play slots, weekday workshops, café snacks" oninput="onExecPage2Change()">
+          </div>
+        </div>
+
+        <!-- TEAM TODAY -->
+        <div class="exec-section-slate">
+          <span style="display:flex; align-items:center; gap:8px;">👥 TEAM TODAY</span>
+          <span style="font-size:0.72rem; color:#64748b; text-transform:none; font-weight:500;">Operations &amp; facilitation staffing</span>
+        </div>
+        <div style="padding:20px 24px; background:#ffffff; font-size:0.88rem; color:#334155;">
+          <div style="display:flex; flex-wrap:wrap; gap:16px; align-items:center; margin-bottom:12px;">
+            <div class="exec-field-row" style="margin-bottom:0;">
+              <span class="exec-field-label">Current team:</span>
+              <input type="text" id="exec-t-size" class="exec-input" style="width:110px;" placeholder="e.g. 7 people" oninput="onExecPage2Change()">
+            </div>
+            <div class="exec-field-row" style="margin-bottom:0; flex:1;">
+              <span class="exec-field-label">Biggest operations / staffing gap:</span>
+              <input type="text" id="exec-t-gap" class="exec-input" style="flex:1; min-width:220px;" placeholder="e.g. Weekend floor manager & lead facilitator" oninput="onExecPage2Change()">
+            </div>
           </div>
           <div class="exec-field-row" style="margin-bottom:0;">
-            <span class="exec-field-label">Biggest source of new families:</span>
-            <input type="text" id="exec-f-source" class="exec-input" style="width:200px;" placeholder="e.g. Word of Mouth, Instagram" oninput="onExecPage2Change()">
+            <span class="exec-field-label">What is working well in the team:</span>
+            <input type="text" id="exec-t-working" class="exec-input" style="flex:1; min-width:280px;" placeholder="e.g. Warm hospitality, strong energy with kids, punctual shifts" oninput="onExecPage2Change()">
           </div>
         </div>
-        <div class="exec-field-row">
-          <span class="exec-field-label">What parents value most:</span>
-          <input type="text" id="exec-f-value" class="exec-input" style="flex:1; min-width:280px;" placeholder="e.g. Attentive facilitators, clean environment, engaging toys" oninput="onExecPage2Change()">
+
+        <!-- OCTOBER–DECEMBER | TOP 3 PRIORITIES -->
+        <div class="exec-section-navy">
+          <span style="display:flex; align-items:center; gap:8px;">🎯 OCTOBER–DECEMBER &bull; TOP 3 PRIORITIES</span>
+          <span style="font-size:0.72rem; color:rgba(26,26,46,0.6); text-transform:none; font-weight:500;">Execution milestones</span>
         </div>
-        <div class="exec-field-row" style="margin-bottom:0;">
-          <span class="exec-field-label">Most common feedback / request:</span>
-          <input type="text" id="exec-f-feedback" class="exec-input" style="flex:1; min-width:280px;" placeholder="e.g. Longer play slots, weekday workshops, café snacks" oninput="onExecPage2Change()">
+        <div class="exec-priorities" id="exec-edit-priorities">
+          <div class="exec-priority-card">
+            <div class="exec-priority-num">01</div>
+            <div style="flex:1;">
+              <input type="text" id="exec-p0-title" class="exec-priority-title-input" placeholder="Priority 1 Title" oninput="onExecPage2Change()">
+              <textarea id="exec-p0-desc" class="exec-priority-desc-input" rows="2" placeholder="Actionable description and targets" oninput="onExecPage2Change()"></textarea>
+            </div>
+          </div>
+          <div class="exec-priority-card">
+            <div class="exec-priority-num">02</div>
+            <div style="flex:1;">
+              <input type="text" id="exec-p1-title" class="exec-priority-title-input" placeholder="Priority 2 Title" oninput="onExecPage2Change()">
+              <textarea id="exec-p1-desc" class="exec-priority-desc-input" rows="2" placeholder="Actionable description and targets" oninput="onExecPage2Change()"></textarea>
+            </div>
+          </div>
+          <div class="exec-priority-card">
+            <div class="exec-priority-num">03</div>
+            <div style="flex:1;">
+              <input type="text" id="exec-p2-title" class="exec-priority-title-input" placeholder="Priority 3 Title" oninput="onExecPage2Change()">
+              <textarea id="exec-p2-desc" class="exec-priority-desc-input" rows="2" placeholder="Actionable description and targets" oninput="onExecPage2Change()"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- START | STOP | CONTINUE -->
+        <div class="exec-section-mint">
+          <span style="display:flex; align-items:center; gap:8px;">🚀 START &nbsp;|&nbsp; 🛑 STOP &nbsp;|&nbsp; 🔁 CONTINUE</span>
+          <span style="font-size:0.72rem; color:#064e3b; text-transform:none; font-weight:500;">Strategic habit shifts</span>
+        </div>
+        <div class="exec-s-s-c-grid">
+          <div class="exec-s-s-c-card">
+            <div style="font-weight:800; font-size:0.9rem; color:#064e3b; margin-bottom:8px;">START</div>
+            <textarea id="exec-ssc-start" class="exec-ssc-textarea" placeholder="One thing we should begin..." oninput="onExecPage2Change()"></textarea>
+            <div style="font-size:0.75rem; color:#64748b;">One thing we should begin</div>
+          </div>
+          <div class="exec-s-s-c-card">
+            <div style="font-weight:800; font-size:0.9rem; color:#b91c1c; margin-bottom:8px;">STOP</div>
+            <textarea id="exec-ssc-stop" class="exec-ssc-textarea" placeholder="One thing we should stop doing..." oninput="onExecPage2Change()"></textarea>
+            <div style="font-size:0.75rem; color:#64748b;">One thing we should stop doing</div>
+          </div>
+          <div class="exec-s-s-c-card">
+            <div style="font-weight:800; font-size:0.9rem; color:#0369a1; margin-bottom:8px;">CONTINUE</div>
+            <textarea id="exec-ssc-continue" class="exec-ssc-textarea" placeholder="One thing we should keep doing..." oninput="onExecPage2Change()"></textarea>
+            <div style="font-size:0.75rem; color:#64748b;">One thing we should keep doing</div>
+          </div>
         </div>
       </div>
 
-      <!-- TEAM TODAY -->
-      <div class="exec-section-slate">TEAM TODAY</div>
-      <div style="padding:16px 20px; background:#ffffff; font-size:0.88rem; color:#334155;">
-        <div style="display:flex; flex-wrap:wrap; gap:16px; align-items:center; margin-bottom:12px;">
-          <div class="exec-field-row" style="margin-bottom:0;">
-            <span class="exec-field-label">Current team:</span>
-            <input type="text" id="exec-t-size" class="exec-input" style="width:110px;" placeholder="e.g. 7 people" oninput="onExecPage2Change()">
-          </div>
-          <div class="exec-field-row" style="margin-bottom:0; flex:1;">
-            <span class="exec-field-label">Biggest operations / staffing gap:</span>
-            <input type="text" id="exec-t-gap" class="exec-input" style="flex:1; min-width:220px;" placeholder="e.g. Weekend floor manager & lead facilitator" oninput="onExecPage2Change()">
-          </div>
-        </div>
-        <div class="exec-field-row" style="margin-bottom:0;">
-          <span class="exec-field-label">What is working well in the team:</span>
-          <input type="text" id="exec-t-working" class="exec-input" style="flex:1; min-width:280px;" placeholder="e.g. Warm hospitality, strong energy with kids, punctual shifts" oninput="onExecPage2Change()">
-        </div>
-      </div>
-
-      <!-- OCTOBER–DECEMBER | TOP 3 PRIORITIES -->
-      <div class="exec-section-navy">OCTOBER–DECEMBER | TOP 3 PRIORITIES</div>
-      <div class="exec-priorities" id="exec-edit-priorities">
-        <div class="exec-priority-card">
-          <div class="exec-priority-num">01</div>
-          <div style="flex:1;">
-            <input type="text" id="exec-p0-title" class="exec-priority-title-input" placeholder="Priority 1 Title" oninput="onExecPage2Change()">
-            <textarea id="exec-p0-desc" class="exec-priority-desc-input" rows="2" placeholder="Actionable description and targets" oninput="onExecPage2Change()"></textarea>
-          </div>
-        </div>
-        <div class="exec-priority-card">
-          <div class="exec-priority-num">02</div>
-          <div style="flex:1;">
-            <input type="text" id="exec-p1-title" class="exec-priority-title-input" placeholder="Priority 2 Title" oninput="onExecPage2Change()">
-            <textarea id="exec-p1-desc" class="exec-priority-desc-input" rows="2" placeholder="Actionable description and targets" oninput="onExecPage2Change()"></textarea>
-          </div>
-        </div>
-        <div class="exec-priority-card">
-          <div class="exec-priority-num">03</div>
-          <div style="flex:1;">
-            <input type="text" id="exec-p2-title" class="exec-priority-title-input" placeholder="Priority 3 Title" oninput="onExecPage2Change()">
-            <textarea id="exec-p2-desc" class="exec-priority-desc-input" rows="2" placeholder="Actionable description and targets" oninput="onExecPage2Change()"></textarea>
-          </div>
-        </div>
-      </div>
-
-      <!-- START | STOP | CONTINUE -->
-      <div class="exec-section-mint">START &nbsp;|&nbsp; STOP &nbsp;|&nbsp; CONTINUE</div>
-      <div class="exec-s-s-c-grid">
-        <div class="exec-s-s-c-card">
-          <div style="font-weight:800; font-size:0.9rem; color:#064e3b; margin-bottom:8px;">START</div>
-          <textarea id="exec-ssc-start" class="exec-ssc-textarea" placeholder="One thing we should begin..." oninput="onExecPage2Change()"></textarea>
-          <div style="font-size:0.75rem; color:#64748b;">One thing we should begin</div>
-        </div>
-        <div class="exec-s-s-c-card">
-          <div style="font-weight:800; font-size:0.9rem; color:#b91c1c; margin-bottom:8px;">STOP</div>
-          <textarea id="exec-ssc-stop" class="exec-ssc-textarea" placeholder="One thing we should stop doing..." oninput="onExecPage2Change()"></textarea>
-          <div style="font-size:0.75rem; color:#64748b;">One thing we should stop doing</div>
-        </div>
-        <div class="exec-s-s-c-card">
-          <div style="font-weight:800; font-size:0.9rem; color:#0369a1; margin-bottom:8px;">CONTINUE</div>
-          <textarea id="exec-ssc-continue" class="exec-ssc-textarea" placeholder="One thing we should keep doing..." oninput="onExecPage2Change()"></textarea>
-          <div style="font-size:0.75rem; color:#64748b;">One thing we should keep doing</div>
-        </div>
-      </div>
-    </div>
+    </div><!-- end exec-wrapper -->
   </div>
 
   <!-- ===== POS ===== -->
@@ -1416,8 +1917,11 @@ input:checked + .slider:before { transform:translateX(18px); }
             <div class="field"><label>Next Invoice Number</label><input type="number" id="s-next"></div>
             <div class="field"><label>UPI ID</label><input type="text" id="s-upi"></div>
             <div class="field"><label>QR Code Image</label><input type="file" id="s-qr-file" accept="image/*" onchange="uploadQR(event)"></div>
-            <div class="field"><label>Admin PIN (leave blank to keep)</label><input type="password" id="s-pass" placeholder="New PIN"></div>
-            <div class="field"><label>Staff PIN (leave blank to keep)</label><input type="password" id="s-staff-pass" placeholder="New Staff PIN"></div>
+            <div class="field">
+              <label>Admin Email(s) for Access (comma-separated)</label>
+              <input type="text" id="s-admin-emails" placeholder="e.g. harish@skylime.in, admin@skylime.in">
+              <small style="color:var(--text2); display:block; margin-top:3px; font-size:0.75rem;">Only users with emails listed here get full Administrator privileges. Any other user added in Firebase automatically gets restricted Staff access (Billing POS &amp; History only).</small>
+            </div>
             <button class="btn btn-primary" onclick="saveSettings()" style="width:100%;">💾 Save Settings</button>
           </div>
         </div>
@@ -2001,12 +2505,23 @@ try {
 const DB_NAME = "SkylimeLLP_ERP_v8";
 let db;
 let data = {
-  config: { name:"SKYLIME LLP", addr:"WARD NO 179, 9th Main Road, Shakambari Nagar, Bengaluru - 560078", gstin:"29AAOFC6642G1Z4", pan:"AAOFC6642G1", upi:"8888888888@okicici", prefix:"SL/26-27/", nextNo:1, pass:"Admin", staffPass:"1234", qrBase64:"" },
+  config: { name:"SKYLIME LLP", addr:"WARD NO 179, 9th Main Road, Shakambari Nagar, Bengaluru - 560078", gstin:"29AAOFC6642G1Z4", pan:"AAOFC6642G1", upi:"8888888888@okicici", prefix:"SL/26-27/", nextNo:1, adminEmails:"admin@skylime.in, harish@skylime.in, skylimellp@gmail.com", qrBase64:"" },
   inventory: [],
   sales: [],
   customers: [],
   auditLog: []
 };
+
+// Helper to escape HTML characters to prevent XSS
+function escHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
 
 // GST on Discount calculation cutoff: 01-09-2026 IST
 const GST_DISC_EFFECTIVE_DATE = new Date('2026-09-01T00:00:00+05:30');
@@ -2126,10 +2641,10 @@ function showCloudStatusDetails() {
 
     ${cloudSyncStatus === 'error' || cloudSyncStatus === 'offline' ? `
     <div style="background:#fffbeb; border:1px solid #fef3c7; border-left:4px solid #f59e0b; border-radius:8px; padding:12px 14px; font-size:0.78rem; color:#92400e; line-height:1.6;">
-      <strong>⚠️ If first-time setup:</strong><br>
+      <strong>⚠️ Cloud Setup &amp; Access:</strong><br>
       1. Open <a href="https://console.firebase.google.com/project/skylime-ca4cb/firestore" target="_blank" style="color:#d97706; font-weight:700; text-decoration:underline;">Firebase Console → Firestore Database</a>.<br>
       2. Ensure database is created in <strong>asia-south1 (Mumbai)</strong>.<br>
-      3. In <strong>Firestore Rules</strong>, allow read/write: <code>allow read, write: if true;</code> (or <code>if request.auth != null;</code> with Anonymous Auth enabled).
+      3. In <strong>Firestore Rules</strong>, ensure access is restricted to authenticated users: <code>allow read, write: if request.auth != null;</code>
     </div>
     ` : `
     <div style="background:#ecfdf5; border:1px solid #d1fae5; border-radius:8px; padding:12px 14px; font-size:0.78rem; color:#065f46; line-height:1.5;">
@@ -2276,20 +2791,23 @@ function startFirestoreListener() {
 // Initialize Firebase Auth
 function initFirebaseAuth() {
   if (!fbAuth) {
-    startFirestoreListener();
+    console.warn("Firebase Auth not initialized");
+    const errBox = document.getElementById('login-error');
+    if (errBox) {
+      errBox.style.display = 'block';
+      errBox.innerHTML = '⚠️ Firebase is offline or uninitialized. Check your internet connection.';
+    }
     return;
   }
 
   fbAuth.onAuthStateChanged(user => {
-    if (user) {
+    if (user && !user.isAnonymous) {
+      applyAuthenticatedUser(user);
       startFirestoreListener();
     } else {
-      fbAuth.signInAnonymously()
-        .then(() => startFirestoreListener())
-        .catch(err => {
-          console.warn("Anonymous sign-in notice:", err.message);
-          startFirestoreListener();
-        });
+      const screen = document.getElementById('login-screen');
+      if (screen) screen.style.display = 'flex';
+      updateCloudStatus('offline', 'Please sign in to connect to Cloud');
     }
   });
 }
@@ -2330,34 +2848,137 @@ let currentUser = 'staff';
 let currentTab = 'pos';
 let autoBackupTimer = null;
 
-function updatePinDots() {
-  const len = document.getElementById('login-pass').value.length;
-  for(let i=0;i<5;i++) document.getElementById('pd'+i).classList.toggle('filled', i < len);
+function applyAuthenticatedUser(user) {
+  if (!user || !user.email) return;
+  const email = user.email.toLowerCase();
+
+  // Strip legacy plain-text PINs from local/cloud datasets if present
+  if (data && data.config) {
+    if ('pass' in data.config) delete data.config.pass;
+    if ('staffPass' in data.config) delete data.config.staffPass;
+  }
+
+  // Determine role:
+  // ONLY emails explicitly listed in data.config.adminEmails get Admin access.
+  const rawAdminEmails = (data && data.config && data.config.adminEmails) || 'admin@skylime.in, harish@skylime.in, skylimellp@gmail.com';
+  const configuredAdminEmails = rawAdminEmails.toLowerCase().split(',').map(s => s.trim()).filter(Boolean);
+
+  const isAdmin = configuredAdminEmails.includes(email) || email === 'admin@skylime.in';
+
+  currentUser = isAdmin ? 'admin' : 'staff';
+
+  const avatarText = email.substring(0, 2).toUpperCase();
+  const displayName = email.split('@')[0];
+
+  const avEl = document.getElementById('user-avatar');
+  if (avEl) avEl.innerText = avatarText;
+
+  const nameEl = document.getElementById('user-name');
+  if (nameEl) nameEl.innerText = displayName.charAt(0).toUpperCase() + displayName.slice(1);
+
+  const roleEl = document.getElementById('user-role');
+  if (roleEl) roleEl.innerText = isAdmin ? 'Administrator' : 'Staff Member';
+
+  document.querySelectorAll('.admin-only').forEach(el => {
+    el.style.display = isAdmin ? '' : 'none';
+  });
+
+  const screen = document.getElementById('login-screen');
+  if (screen) screen.style.display = 'none';
+
+  showTab(isAdmin ? 'dashboard' : 'pos');
 }
 
 function handleLogin() {
-  const p = document.getElementById('login-pass').value;
-  const adminPin = (data.config && data.config.pass) || 'Admin';
-  const staffPin = (data.config && data.config.staffPass) || '1234';
+  const emailEl = document.getElementById('login-email');
+  const passEl = document.getElementById('login-pass');
+  const errBox = document.getElementById('login-error');
+  const btn = document.getElementById('login-submit-btn');
 
-  if(p === adminPin) {
-    currentUser = 'admin';
-    document.getElementById('user-avatar').innerText = 'AD';
-    document.getElementById('user-name').innerText = 'Admin';
-    document.getElementById('user-role').innerText = 'Administrator';
-  } else if(p === staffPin) {
-    currentUser = 'staff';
-    document.getElementById('user-avatar').innerText = 'ST';
-    document.getElementById('user-name').innerText = 'Staff';
-    document.getElementById('user-role').innerText = 'Staff Member';
-  } else { alert("❌ Invalid PIN"); return; }
-  document.getElementById('login-screen').style.display = 'none';
-  document.querySelectorAll('.admin-only').forEach(el => el.style.display = currentUser==='admin' ? '' : 'none');
-  showTab(currentUser==='admin' ? 'dashboard' : 'pos');
+  const email = emailEl ? emailEl.value.trim() : '';
+  const pass = passEl ? passEl.value : '';
+
+  if (!email) {
+    if (errBox) { errBox.style.display = 'block'; errBox.innerHTML = '⚠️ Please enter your email address.'; }
+    if (emailEl) emailEl.focus();
+    return;
+  }
+  if (!pass) {
+    if (errBox) { errBox.style.display = 'block'; errBox.innerHTML = '⚠️ Please enter your password.'; }
+    if (passEl) passEl.focus();
+    return;
+  }
+
+  if (errBox) errBox.style.display = 'none';
+  if (btn) { btn.innerText = 'AUTHENTICATING...'; btn.disabled = true; }
+
+  if (!fbAuth) {
+    if (errBox) {
+      errBox.style.display = 'block';
+      errBox.innerHTML = '❌ Firebase is not initialized. Please verify your connection.';
+    }
+    if (btn) { btn.innerText = 'SIGN IN TO SYSTEM →'; btn.disabled = false; }
+    return;
+  }
+
+  fbAuth.signInWithEmailAndPassword(email, pass)
+    .then(cred => {
+      if (btn) { btn.innerText = 'SIGN IN TO SYSTEM →'; btn.disabled = false; }
+      applyAuthenticatedUser(cred.user);
+      startFirestoreListener();
+      showTallyToast(`✅ Signed in as ${cred.user.email}`, 'green');
+    })
+    .catch(err => {
+      if (btn) { btn.innerText = 'SIGN IN TO SYSTEM →'; btn.disabled = false; }
+      if (errBox) {
+        errBox.style.display = 'block';
+        if (err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') {
+          errBox.innerHTML = '❌ <strong>Incorrect email or password.</strong> Please check your credentials.';
+        } else if (err.code === 'auth/invalid-email') {
+          errBox.innerHTML = '❌ <strong>Invalid email format.</strong> Please enter a valid email address.';
+        } else if (err.code === 'auth/too-many-requests') {
+          errBox.innerHTML = '⚠️ <strong>Account temporarily locked</strong> due to multiple failed attempts. Please wait a few minutes.';
+        } else if (err.code === 'auth/network-request-failed') {
+          errBox.innerHTML = '⚠️ <strong>Network error.</strong> Please check your internet connection.';
+        } else {
+          errBox.innerHTML = '❌ ' + (err.message || 'Authentication failed');
+        }
+      }
+    });
+}
+
+function handleLogout() {
+  if (!confirm('Are you sure you want to sign out?')) return;
+  if (fbAuth) {
+    fbAuth.signOut().then(() => {
+      location.reload();
+    }).catch(() => {
+      location.reload();
+    });
+  } else {
+    location.reload();
+  }
+}
+
+function toggleLoginPassword() {
+  const p = document.getElementById('login-pass');
+  const btn = document.getElementById('login-eye-btn');
+  if (!p) return;
+  if (p.type === 'password') {
+    p.type = 'text';
+    if (btn) btn.innerText = '🙈';
+  } else {
+    p.type = 'password';
+    if (btn) btn.innerText = '👁️';
+  }
 }
 
 // ===== NAVIGATION =====
 function showTab(id) {
+  if (currentUser !== 'admin' && ['dashboard', 'inventory', 'customers', 'auditlog', 'settings'].includes(id)) {
+    id = 'pos';
+    showTallyToast('🔒 Admin permission required for that section.', 'accent');
+  }
   currentTab = id;
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -2379,7 +3000,15 @@ function refreshUI() {
   document.getElementById('s-prefix').value = data.config.prefix;
   document.getElementById('s-next').value = data.config.nextNo;
   document.getElementById('s-upi').value = data.config.upi;
-  setInterval(() => document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit',second:'2-digit'}), 1000);
+  const adminEmailsEl = document.getElementById('s-admin-emails');
+  if (adminEmailsEl) adminEmailsEl.value = data.config.adminEmails || 'admin@skylime.in, harish@skylime.in';
+  if (!window._clockStarted) {
+    window._clockStarted = true;
+    setInterval(() => {
+      const c = document.getElementById('clock');
+      if (c) c.innerText = new Date().toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    }, 1000);
+  }
   // Restore auto backup settings
   if(data.config.autoBackup) {
     document.getElementById('auto-backup-toggle').checked = true;
@@ -3096,9 +3725,9 @@ function finalizeSale() {
   // Build confirm modal
   const det = document.getElementById('confirm-details');
   det.innerHTML = `
-    <div class="confirm-row"><span class="cr-label">Invoice #</span><span class="cr-val font-mono">${invNo}</span></div>
-    <div class="confirm-row"><span class="cr-label">Customer</span><span class="cr-val">${name}${phone?' ('+phone+')':''}</span></div>
-    <div class="confirm-row"><span class="cr-label">Payment Mode</span><span class="cr-val">${pendingSale.mode}</span></div>
+    <div class="confirm-row"><span class="cr-label">Invoice #</span><span class="cr-val font-mono">${escHtml(invNo)}</span></div>
+    <div class="confirm-row"><span class="cr-label">Customer</span><span class="cr-val">${escHtml(name)}${phone?' ('+escHtml(phone)+')':''}</span></div>
+    <div class="confirm-row"><span class="cr-label">Payment Mode</span><span class="cr-val">${escHtml(pendingSale.mode)}</span></div>
     <div class="confirm-row"><span class="cr-label">Date & Time</span><span class="cr-val">${new Date().toLocaleString('en-IN')}</span></div>
   `;
 
@@ -3106,7 +3735,7 @@ function finalizeSale() {
   tbody.innerHTML = '';
   pendingSale.items.forEach((i,idx) => {
     const row = document.createElement('tr');
-    row.innerHTML = `<td>${idx+1}</td><td>${i.name}</td><td>${i.cQty}</td><td>₹${i.rate}</td><td>${i.gst}%</td><td>₹${(i.rate*i.cQty).toFixed(2)}</td>`;
+    row.innerHTML = `<td>${idx+1}</td><td>${escHtml(i.name)}</td><td>${i.cQty}</td><td>₹${i.rate}</td><td>${i.gst}%</td><td>₹${(i.rate*i.cQty).toFixed(2)}</td>`;
     tbody.appendChild(row);
   });
 
@@ -3270,13 +3899,11 @@ function renderPrint(sale) {
     childRow.style.display = 'none';
   }
 
-  // QR — only for UPI, amount = balance if advance exists, else total
+  // QR — only for UPI if local business QR image was uploaded in Settings
   const qrWrap = document.getElementById('p-qr-wrap');
   const qr = document.getElementById('p-qr-img');
-  if (sale.mode === 'UPI') {
-    const payAmt = (sale.advance > 0 && sale.balance > 0) ? sale.balance : sale.total;
-    const upiStr = `upi://pay?pa=${encodeURIComponent(data.config.upi)}&am=${payAmt.toFixed(2)}&pn=${encodeURIComponent(data.config.name)}&tn=${encodeURIComponent(sale.invNo)}`;
-    qr.src = data.config.qrBase64 || `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(upiStr)}`;
+  if (sale.mode === 'UPI' && data.config.qrBase64) {
+    qr.src = data.config.qrBase64;
     if(qrWrap) qrWrap.style.display = '';
   } else {
     qr.src = '';
@@ -3298,7 +3925,7 @@ function renderPrint(sale) {
     const taxable = effTotal/(1+i.gst/100);
     const gst = effTotal - taxable;
     tx += taxable; gt += gst;
-    body.innerHTML += `<tr><td>${idx+1}</td><td>${i.name}</td><td>${i.hsn}</td><td>${i.cQty}</td><td>${i.gst}%</td><td>${tot.toFixed(2)}</td></tr>`;
+    body.innerHTML += `<tr><td>${idx+1}</td><td>${escHtml(i.name)}</td><td>${escHtml(i.hsn)}</td><td>${i.cQty}</td><td>${i.gst}%</td><td>${tot.toFixed(2)}</td></tr>`;
     if(!hMap[i.hsn]) hMap[i.hsn]={tx:0,g:0,rate:i.gst};
     hMap[i.hsn].tx += taxable; hMap[i.hsn].g += gst;
   });
@@ -3567,6 +4194,8 @@ function importMasterBackup(event) {
     try {
       const imported = JSON.parse(e.target.result);
       if(imported.config && imported.inventory && imported.sales) {
+        delete imported.config.pass;
+        delete imported.config.staffPass;
         data = imported;
         saveLocalIndexedDB();
         if(fbDocRef) {
@@ -3681,8 +4310,10 @@ function saveSettings() {
   data.config.prefix = document.getElementById('s-prefix').value;
   data.config.nextNo = parseInt(document.getElementById('s-next').value);
   data.config.upi = document.getElementById('s-upi').value;
-  if(document.getElementById('s-pass').value) data.config.pass = document.getElementById('s-pass').value;
-  if(document.getElementById('s-staff-pass').value) data.config.staffPass = document.getElementById('s-staff-pass').value;
+  const adminEmailsEl = document.getElementById('s-admin-emails');
+  if (adminEmailsEl) data.config.adminEmails = adminEmailsEl.value.trim();
+  delete data.config.pass;
+  delete data.config.staffPass;
   saveDB(); alert('✅ Settings Saved!');
 }
 
@@ -3732,36 +4363,52 @@ function getMonthKey(dateStr) {
   return `${y}-${m}`;
 }
 
-const EXEC_MONTH_CONFIG = [
-  { key: '2026-04', name: 'April' },
-  { key: '2026-05', name: 'May' },
-  { key: '2026-06', name: 'June' },
-  { key: '2026-07', name: 'July' },
-  { key: '2026-08', name: 'August' },
-  { key: '2026-09', name: 'September' }
+// ===== MULTI-PERIOD DASHBOARD ENGINE =====
+let currentExecPeriod = 'semiannual'; // 'monthly' | 'quarterly' | 'semiannual' | 'annual'
+let currentExecMonth = '2026-09';     // Selected month for Monthly view
+
+const ALL_FY_MONTHS = [
+  { key: '2026-04', name: 'April', q: 'Q1', days: 30 },
+  { key: '2026-05', name: 'May', q: 'Q1', days: 31 },
+  { key: '2026-06', name: 'June', q: 'Q1', days: 30 },
+  { key: '2026-07', name: 'July', q: 'Q2', days: 31 },
+  { key: '2026-08', name: 'August', q: 'Q2', days: 31 },
+  { key: '2026-09', name: 'September', q: 'Q2', days: 30 },
+  { key: '2026-10', name: 'October', q: 'Q3', days: 31 },
+  { key: '2026-11', name: 'November', q: 'Q3', days: 30 },
+  { key: '2026-12', name: 'December', q: 'Q3', days: 31 },
+  { key: '2027-01', name: 'January', q: 'Q4', days: 31 },
+  { key: '2027-02', name: 'February', q: 'Q4', days: 28 },
+  { key: '2027-03', name: 'March', q: 'Q4', days: 31 }
 ];
+
+const EXEC_MONTH_CONFIG = ALL_FY_MONTHS.slice(0, 6);
 
 function ensureExecData() {
   if (!data.execData) data.execData = {};
-  if (!data.execData.expenses) {
-    data.execData.expenses = {
-      '2026-04': 310000,
-      '2026-05': 275000,
-      '2026-06': 290000,
-      '2026-07': 315000,
-      '2026-08': 340000,
-      '2026-09': 355000
-    };
+  const defaultExpenses = {
+    '2026-04': 310000, '2026-05': 275000, '2026-06': 290000,
+    '2026-07': 315000, '2026-08': 340000, '2026-09': 355000,
+    '2026-10': 360000, '2026-11': 365000, '2026-12': 380000,
+    '2027-01': 350000, '2027-02': 345000, '2027-03': 370000
+  };
+  const defaultStaff = {
+    '2026-04': 5, '2026-05': 5, '2026-06': 6,
+    '2026-07': 6, '2026-08': 7, '2026-09': 7,
+    '2026-10': 7, '2026-11': 8, '2026-12': 8,
+    '2027-01': 8, '2027-02': 8, '2027-03': 8
+  };
+  if (!data.execData.expenses) data.execData.expenses = defaultExpenses;
+  else {
+    for (const k in defaultExpenses) {
+      if (data.execData.expenses[k] === undefined) data.execData.expenses[k] = defaultExpenses[k];
+    }
   }
-  if (!data.execData.staff) {
-    data.execData.staff = {
-      '2026-04': 5,
-      '2026-05': 5,
-      '2026-06': 6,
-      '2026-07': 6,
-      '2026-08': 7,
-      '2026-09': 7
-    };
+  if (!data.execData.staff) data.execData.staff = defaultStaff;
+  else {
+    for (const k in defaultStaff) {
+      if (data.execData.staff[k] === undefined) data.execData.staff[k] = defaultStaff[k];
+    }
   }
   if (!data.execData.story) {
     data.execData.story = "Skylime has moved from launch and experimentation to building a base of repeat families, a stronger activity calendar and growing birthday/event traction.";
@@ -3804,63 +4451,146 @@ function ensureExecData() {
   }
 }
 
-function calculateExecMetrics() {
-  ensureExecData();
-  const allSales = (data.sales || []).filter(s => !s.cancelled);
+function setDashboardPeriod(period) {
+  currentExecPeriod = period;
 
-  // Map lifetime visits per customer phone
-  const visitCounts = {};
-  allSales.forEach(s => {
-    const ph = s.cust && s.cust.phone ? s.cust.phone.trim() : null;
-    if (ph) {
-      visitCounts[ph] = (visitCounts[ph] || 0) + 1;
-    }
+  ['monthly', 'quarterly', 'semiannual', 'annual'].forEach(p => {
+    const btn = document.getElementById('btn-period-' + p);
+    if (btn) btn.classList.toggle('active', p === period);
   });
 
+  const monthSub = document.getElementById('exec-month-subselector');
+  if (monthSub) {
+    monthSub.style.display = period === 'monthly' ? 'flex' : 'none';
+    if (period === 'monthly') renderMonthPills();
+  }
+
+  const chip = document.getElementById('exec-period-chip');
+  if (chip) {
+    if (period === 'monthly') {
+      const curM = ALL_FY_MONTHS.find(m => m.key === currentExecMonth) || ALL_FY_MONTHS[5];
+      chip.innerText = `📍 Monthly View: ${curM.name} ${curM.key.split('-')[0]}`;
+    } else if (period === 'quarterly') {
+      chip.innerText = `📍 Quarterly Consolidated View (Q1 – Q4 FY 26-27)`;
+    } else if (period === 'annual') {
+      chip.innerText = `📍 Annual Full Financial Year View (Apr 2026 – Mar 2027)`;
+    } else {
+      chip.innerText = `📍 Semi-Annual Snapshot (Apr – Sep 2026)`;
+    }
+  }
+
+  renderExecDashboard();
+}
+
+function selectExecMonth(mKey) {
+  currentExecMonth = mKey;
+  renderMonthPills();
+  const chip = document.getElementById('exec-period-chip');
+  if (chip) {
+    const curM = ALL_FY_MONTHS.find(m => m.key === currentExecMonth) || ALL_FY_MONTHS[5];
+    chip.innerText = `📍 Monthly View: ${curM.name} ${mKey.split('-')[0]}`;
+  }
+  renderExecDashboard();
+}
+
+function renderMonthPills() {
+  const container = document.getElementById('exec-month-pills');
+  if (!container) return;
+  container.innerHTML = ALL_FY_MONTHS.map(m => {
+    const active = m.key === currentExecMonth ? 'active' : '';
+    return `<button type="button" class="exec-month-btn ${active}" onclick="selectExecMonth('${m.key}')">${m.name.slice(0, 3)}</button>`;
+  }).join('');
+}
+
+function openExecGlanceDrilldown(type) {
+  if (type === 'rev') {
+    if (currentExecPeriod === 'monthly') openExecDrilldown('revenue', currentExecMonth, currentExecMonth);
+    else if (currentExecPeriod === 'quarterly') openExecDrilldown('revenue', 'all', 'Consolidated Quarterly');
+    else if (currentExecPeriod === 'annual') openExecDrilldown('revenue', 'all', 'Full Financial Year');
+    else openExecDrilldown('revenue', 'all', 'All 6 Months Total');
+  } else if (type === 'kids') {
+    if (currentExecPeriod === 'monthly') openExecDrilldown('kids', currentExecMonth, currentExecMonth);
+    else openExecDrilldown('kids', 'all', currentExecPeriod === 'annual' ? 'Full FY' : 'Period Total');
+  } else if (type === 'repeat') {
+    if (currentExecPeriod === 'monthly') openExecDrilldown('repeat', currentExecMonth, currentExecMonth);
+    else openExecDrilldown('repeat', 'all', currentExecPeriod === 'annual' ? 'Full FY' : 'Period Total');
+  } else if (type === 'team') {
+    openExecStaffModal(currentExecPeriod === 'monthly' ? currentExecMonth : '2026-09', 'Team Management');
+  } else if (type === 'activities') {
+    if (currentExecPeriod === 'monthly') openExecDrilldown('activities', currentExecMonth, currentExecMonth);
+    else openExecDrilldown('activities', 'all', currentExecPeriod === 'annual' ? 'Full FY' : 'Period Total');
+  } else if (type === 'birthdays') {
+    if (currentExecPeriod === 'monthly') openExecDrilldown('birthdays', currentExecMonth, currentExecMonth);
+    else openExecDrilldown('birthdays', 'all', currentExecPeriod === 'annual' ? 'Full FY' : 'Period Total');
+  } else if (type === 'bench') {
+    if (currentExecPeriod === 'monthly') openExecDrilldown('revenue', currentExecMonth, currentExecMonth);
+    else openExecDrilldown('revenue', '2026-09', 'September 2026');
+  } else if (type === 'gap') {
+    openExecOperatingGapModal(currentExecPeriod === 'monthly' ? currentExecMonth : '2026-09', 'Operating Gap & P&L');
+  }
+}
+
+// Category Breakdown Helper
+function calcCategoryShares(salesList) {
+  const catRev = { openPlay: 0, activities: 0, birthdays: 0, other: 0 };
+  salesList.forEach(s => {
+    (s.items || []).forEach(it => {
+      const lineTotal = (it.rate || 0) * (it.cQty || 1);
+      const name = (it.name || '').toLowerCase();
+      if (/birth|bday|party|event|celebrat/.test(name)) {
+        catRev.birthdays += lineTotal;
+      } else if (/open\s*play|play|soft\s*play|hourly/.test(name)) {
+        catRev.openPlay += lineTotal;
+      } else if (/activit|workshop|camp|class|session|art|craft|science|music|dance/.test(name) || it.type === 'Service') {
+        catRev.activities += lineTotal;
+      } else {
+        catRev.other += lineTotal;
+      }
+    });
+  });
+  const total = catRev.openPlay + catRev.activities + catRev.birthdays + catRev.other;
+  const op = total > 0 ? Math.round((catRev.openPlay / total) * 100) : 45;
+  const act = total > 0 ? Math.round((catRev.activities / total) * 100) : 30;
+  const bday = total > 0 ? Math.round((catRev.birthdays / total) * 100) : 20;
+  const other = total > 0 ? Math.max(0, 100 - (op + act + bday)) : 5;
+  return {
+    catRev,
+    catShares: { openPlay: op, activities: act, birthdays: bday, other: other },
+    totalCatRev: total
+  };
+}
+
+// 1. Semi-Annual Metrics (Default Snapshot)
+function calculateSemiAnnualMetrics(allSales, visitCounts) {
+  const monthConfigs = ALL_FY_MONTHS.slice(0, 6);
   const monthRows = [];
-  let totalRev = 0;
-  let totalExp = 0;
-  let totalKids = 0;
-  let totalSessions = 0;
-  let totalBirthdays = 0;
-  const periodPhones = new Set();
-  const periodRepeatPhones = new Set();
+  let totalRev = 0, totalExp = 0, totalKids = 0, totalSessions = 0, totalBirthdays = 0;
+  const periodPhones = new Set(), periodRepeatPhones = new Set();
+  const periodSales = [];
 
-  const categoryRev = { openPlay: 0, activities: 0, birthdays: 0, other: 0 };
-
-  EXEC_MONTH_CONFIG.forEach(cfg => {
+  monthConfigs.forEach(cfg => {
     const mKey = cfg.key;
-    const mName = cfg.name;
     const mSales = allSales.filter(s => s.date && getMonthKey(s.date) === mKey);
+    mSales.forEach(s => periodSales.push(s));
 
-    // Revenue
     const rev = mSales.reduce((acc, s) => acc + (s.total || 0), 0);
-
-    // Expenses
     const exp = data.execData.expenses[mKey] !== undefined ? data.execData.expenses[mKey] : 0;
 
-    // Kids Served
     let kids = 0;
     mSales.forEach(s => {
-      if (s.children && s.children.length > 0) {
-        kids += s.children.length;
-      } else if (s.child && s.child.name) {
-        kids += 1;
-      } else {
+      if (s.children && s.children.length > 0) kids += s.children.length;
+      else if (s.child && s.child.name) kids += 1;
+      else {
         const svcQty = (s.items || []).filter(it => it.type === 'Service').reduce((sum, it) => sum + (it.cQty || 1), 0);
         kids += svcQty > 0 ? svcQty : 1;
       }
     });
 
-    // Activities / Sessions
     let sessions = 0;
     mSales.forEach(s => {
-      (s.items || []).forEach(it => {
-        if (it.type === 'Service') sessions += (it.cQty || 1);
-      });
+      (s.items || []).forEach(it => { if (it.type === 'Service') sessions += (it.cQty || 1); });
     });
 
-    // Birthdays / Events
     let birthdays = 0;
     mSales.forEach(s => {
       const isBday = (s.items || []).some(it => /birth|bday|party|event|celebrat/i.test(it.name || '')) ||
@@ -3868,7 +4598,6 @@ function calculateExecMetrics() {
       if (isBday) birthdays += 1;
     });
 
-    // Repeat Families %
     const mPhones = new Set(mSales.map(s => s.cust && s.cust.phone ? s.cust.phone.trim() : null).filter(Boolean));
     let repeatCount = 0;
     mPhones.forEach(ph => {
@@ -3879,158 +4608,603 @@ function calculateExecMetrics() {
       }
     });
     const repeatPct = mPhones.size > 0 ? Math.round((repeatCount / mPhones.size) * 100) : 0;
-
-    // Staff
     const staff = data.execData.staff[mKey] !== undefined ? data.execData.staff[mKey] : 0;
 
-    // Category revenue
-    mSales.forEach(s => {
-      (s.items || []).forEach(it => {
-        const lineTotal = (it.rate || 0) * (it.cQty || 1);
-        const name = (it.name || '').toLowerCase();
-        if (/birth|bday|party|event|celebrat/.test(name)) {
-          categoryRev.birthdays += lineTotal;
-        } else if (/open\s*play|play|soft\s*play|hourly/.test(name)) {
-          categoryRev.openPlay += lineTotal;
-        } else if (/activit|workshop|camp|class|session|art|craft|science|music|dance/.test(name) || it.type === 'Service') {
-          categoryRev.activities += lineTotal;
-        } else {
-          categoryRev.other += lineTotal;
-        }
-      });
-    });
-
-    totalRev += rev;
-    totalExp += exp;
-    totalKids += kids;
-    totalSessions += sessions;
-    totalBirthdays += birthdays;
+    totalRev += rev; totalExp += exp; totalKids += kids; totalSessions += sessions; totalBirthdays += birthdays;
 
     monthRows.push({
-      key: mKey,
-      name: mName,
-      revenue: rev,
-      expenses: exp,
-      kids,
-      sessions,
-      birthdays,
-      repeatPct,
-      staff,
-      salesCount: mSales.length,
-      uniqueFamilies: mPhones.size,
-      repeatFamilies: repeatCount
+      key: mKey, name: cfg.name, revenue: rev, expenses: exp,
+      kids, sessions, birthdays, repeatPct, staff,
+      salesCount: mSales.length, uniqueFamilies: mPhones.size, repeatFamilies: repeatCount
     });
   });
 
-  const overallRepeatPct = periodPhones.size > 0
-    ? Math.round((periodRepeatPhones.size / periodPhones.size) * 100)
-    : 0;
-
+  const overallRepeatPct = periodPhones.size > 0 ? Math.round((periodRepeatPhones.size / periodPhones.size) * 100) : 0;
   const currentStaff = data.execData.staff['2026-09'] || 7;
   const sepRow = monthRows.find(r => r.key === '2026-09') || monthRows[monthRows.length - 1];
   const sepRev = sepRow ? sepRow.revenue : 0;
   const sepExp = sepRow ? sepRow.expenses : 0;
   const sepGap = sepRev - sepExp;
 
-  const totalCatRev = categoryRev.openPlay + categoryRev.activities + categoryRev.birthdays + categoryRev.other;
-  const catShares = {
-    openPlay: totalCatRev > 0 ? Math.round((categoryRev.openPlay / totalCatRev) * 100) : 45,
-    activities: totalCatRev > 0 ? Math.round((categoryRev.activities / totalCatRev) * 100) : 30,
-    birthdays: totalCatRev > 0 ? Math.round((categoryRev.birthdays / totalCatRev) * 100) : 20,
-    other: totalCatRev > 0 ? Math.max(0, 100 - (Math.round((categoryRev.openPlay / totalCatRev) * 100) + Math.round((categoryRev.activities / totalCatRev) * 100) + Math.round((categoryRev.birthdays / totalCatRev) * 100))) : 5
-  };
+  const cats = calcCategoryShares(periodSales);
 
   return {
-    monthRows,
-    totals: {
-      revenue: totalRev,
-      expenses: totalExp,
-      kids: totalKids,
-      sessions: totalSessions,
-      birthdays: totalBirthdays,
+    periodType: 'semiannual',
+    rows: monthRows,
+    monthRows: monthRows,
+    totals: { revenue: totalRev, expenses: totalExp, kids: totalKids, sessions: totalSessions, birthdays: totalBirthdays, repeatPct: overallRepeatPct, staff: currentStaff },
+    glance: {
+      revLabel: 'Total Revenue', revVal: totalRev,
+      kidsLabel: 'Kids Served', kidsVal: totalKids,
+      repeatLabel: 'Repeat Families', repeatVal: overallRepeatPct + '%',
+      teamLabel: 'Current Team', teamVal: currentStaff,
+      sessionsLabel: 'Activities / Sessions', sessionsVal: totalSessions,
+      bdayLabel: 'Birthdays / Events', bdayVal: totalBirthdays,
+      benchLabel: 'September Revenue', benchVal: '₹' + formatINR(sepRev),
+      gapLabel: 'Monthly Operating Gap', gapVal: sepGap,
+      totalRev: totalRev,
+      totalSessions: totalSessions,
+      currentStaff: currentStaff,
+      totalKids: totalKids,
+      totalBirthdays: totalBirthdays,
+      sepGap: sepGap,
       repeatPct: overallRepeatPct,
-      staff: currentStaff
+      sepRev: sepRev
+    },
+    catShares: cats.catShares,
+    categoryRev: cats.catRev,
+    totalCatRev: cats.totalCatRev,
+    meta: {
+      title: 'Executive Review — First Six Months',
+      subtitle: '7 April – 30 September 2026 • Performance Snapshot, Learnings & Priorities',
+      bannerTitle: 'SKYLIME | OUR FIRST SIX MONTHS',
+      bannerSub: '7 April – 30 September 2026 | Live ERP Data • Click any metric or cell to drill down into underlying transactions',
+      storyHeading: 'THE SIX-MONTH STORY IN ONE SENTENCE',
+      p1ButtonText: '📄 Page 1 - Six Month Snapshot',
+      totalRowLabel: '6-MONTH TOTAL / CURRENT',
+      columns: ['Month', 'Revenue (₹)', 'Expenses (₹)', 'Kids Served', 'Activities / Sessions', 'Birthdays / Events', 'Repeat Families %', 'Staff']
+    }
+  };
+}
+
+// 2. Annual Metrics (Full 12 Months)
+function calculateAnnualMetrics(allSales, visitCounts) {
+  const monthRows = [];
+  let totalRev = 0, totalExp = 0, totalKids = 0, totalSessions = 0, totalBirthdays = 0;
+  const periodPhones = new Set(), periodRepeatPhones = new Set();
+  const periodSales = [];
+  let peakStaff = 0;
+
+  ALL_FY_MONTHS.forEach(cfg => {
+    const mKey = cfg.key;
+    const mSales = allSales.filter(s => s.date && getMonthKey(s.date) === mKey);
+    mSales.forEach(s => periodSales.push(s));
+
+    const rev = mSales.reduce((acc, s) => acc + (s.total || 0), 0);
+    const exp = data.execData.expenses[mKey] !== undefined ? data.execData.expenses[mKey] : 0;
+
+    let kids = 0;
+    mSales.forEach(s => {
+      if (s.children && s.children.length > 0) kids += s.children.length;
+      else if (s.child && s.child.name) kids += 1;
+      else {
+        const svcQty = (s.items || []).filter(it => it.type === 'Service').reduce((sum, it) => sum + (it.cQty || 1), 0);
+        kids += svcQty > 0 ? svcQty : 1;
+      }
+    });
+
+    let sessions = 0;
+    mSales.forEach(s => {
+      (s.items || []).forEach(it => { if (it.type === 'Service') sessions += (it.cQty || 1); });
+    });
+
+    let birthdays = 0;
+    mSales.forEach(s => {
+      const isBday = (s.items || []).some(it => /birth|bday|party|event|celebrat/i.test(it.name || '')) ||
+                     (s.note && /birth|bday|party|event/i.test(s.note));
+      if (isBday) birthdays += 1;
+    });
+
+    const mPhones = new Set(mSales.map(s => s.cust && s.cust.phone ? s.cust.phone.trim() : null).filter(Boolean));
+    let repeatCount = 0;
+    mPhones.forEach(ph => {
+      periodPhones.add(ph);
+      if (visitCounts[ph] > 1) {
+        repeatCount++;
+        periodRepeatPhones.add(ph);
+      }
+    });
+    const repeatPct = mPhones.size > 0 ? Math.round((repeatCount / mPhones.size) * 100) : 0;
+    const staff = data.execData.staff[mKey] !== undefined ? data.execData.staff[mKey] : 0;
+    if (staff > peakStaff) peakStaff = staff;
+
+    totalRev += rev; totalExp += exp; totalKids += kids; totalSessions += sessions; totalBirthdays += birthdays;
+
+    monthRows.push({
+      key: mKey, name: `${cfg.name} ${cfg.key.split('-')[0]}`, revenue: rev, expenses: exp,
+      kids, sessions, birthdays, repeatPct, staff,
+      salesCount: mSales.length, uniqueFamilies: mPhones.size, repeatFamilies: repeatCount
+    });
+  });
+
+  const overallRepeatPct = periodPhones.size > 0 ? Math.round((periodRepeatPhones.size / periodPhones.size) * 100) : 0;
+  const netAnnualGap = totalRev - totalExp;
+  const cats = calcCategoryShares(periodSales);
+
+  return {
+    periodType: 'annual',
+    rows: monthRows,
+    monthRows: monthRows,
+    totals: { revenue: totalRev, expenses: totalExp, kids: totalKids, sessions: totalSessions, birthdays: totalBirthdays, repeatPct: overallRepeatPct, staff: peakStaff },
+    glance: {
+      revLabel: 'Annual Revenue (FY)', revVal: totalRev,
+      kidsLabel: 'Annual Kids Served', kidsVal: totalKids,
+      repeatLabel: 'FY Repeat Families', repeatVal: overallRepeatPct + '%',
+      teamLabel: 'Peak Team Size', teamVal: peakStaff,
+      sessionsLabel: 'Annual Sessions', sessionsVal: totalSessions,
+      bdayLabel: 'Annual Events', bdayVal: totalBirthdays,
+      benchLabel: 'Total FY Expenses', benchVal: '₹' + formatINR(totalExp),
+      gapLabel: 'Net Annual Operating Gap', gapVal: netAnnualGap,
+      totalRev: totalRev,
+      totalSessions: totalSessions,
+      currentStaff: peakStaff,
+      totalKids: totalKids,
+      totalBirthdays: totalBirthdays,
+      sepGap: netAnnualGap,
+      repeatPct: overallRepeatPct,
+      sepRev: totalExp
+    },
+    catShares: cats.catShares,
+    categoryRev: cats.catRev,
+    totalCatRev: cats.totalCatRev,
+    meta: {
+      title: 'Annual Executive Overview — FY 2026-27',
+      subtitle: '1 April 2026 – 31 March 2027 • Full Financial Year View & Month-by-Month Trajectory',
+      bannerTitle: 'SKYLIME | FULL FINANCIAL YEAR 2026-27',
+      bannerSub: '1 April 2026 – 31 March 2027 | Month-by-Month Trendline & Annual Unit Economics',
+      storyHeading: 'THE ANNUAL PERFORMANCE STORY',
+      p1ButtonText: '📄 Page 1 - Annual Snapshot',
+      totalRowLabel: 'FULL FINANCIAL YEAR TOTAL',
+      columns: ['Month', 'Revenue (₹)', 'Expenses (₹)', 'Kids Served', 'Activities / Sessions', 'Birthdays / Events', 'Repeat Families %', 'Staff']
+    }
+  };
+}
+
+// 3. Quarterly Metrics (Q1 – Q4)
+function calculateQuarterlyMetrics(allSales, visitCounts) {
+  const quarters = [
+    { key: 'Q1', name: 'Q1 (Apr – Jun 2026)', months: ['2026-04', '2026-05', '2026-06'] },
+    { key: 'Q2', name: 'Q2 (Jul – Sep 2026)', months: ['2026-07', '2026-08', '2026-09'] },
+    { key: 'Q3', name: 'Q3 (Oct – Dec 2026)', months: ['2026-10', '2026-11', '2026-12'] },
+    { key: 'Q4', name: 'Q4 (Jan – Mar 2027)', months: ['2027-01', '2027-02', '2027-03'] }
+  ];
+
+  const qRows = [];
+  let totalRev = 0, totalExp = 0, totalKids = 0, totalSessions = 0, totalBirthdays = 0;
+  const periodPhones = new Set(), periodRepeatPhones = new Set();
+  const periodSales = [];
+
+  quarters.forEach(q => {
+    const qSales = allSales.filter(s => s.date && q.months.includes(getMonthKey(s.date)));
+    qSales.forEach(s => periodSales.push(s));
+
+    const rev = qSales.reduce((acc, s) => acc + (s.total || 0), 0);
+    const exp = q.months.reduce((acc, mKey) => acc + (data.execData.expenses[mKey] || 0), 0);
+    const gap = rev - exp;
+
+    let kids = 0;
+    qSales.forEach(s => {
+      if (s.children && s.children.length > 0) kids += s.children.length;
+      else if (s.child && s.child.name) kids += 1;
+      else {
+        const svcQty = (s.items || []).filter(it => it.type === 'Service').reduce((sum, it) => sum + (it.cQty || 1), 0);
+        kids += svcQty > 0 ? svcQty : 1;
+      }
+    });
+
+    let sessions = 0;
+    qSales.forEach(s => {
+      (s.items || []).forEach(it => { if (it.type === 'Service') sessions += (it.cQty || 1); });
+    });
+
+    let birthdays = 0;
+    qSales.forEach(s => {
+      const isBday = (s.items || []).some(it => /birth|bday|party|event|celebrat/i.test(it.name || '')) ||
+                     (s.note && /birth|bday|party|event/i.test(s.note));
+      if (isBday) birthdays += 1;
+    });
+
+    const qPhones = new Set(qSales.map(s => s.cust && s.cust.phone ? s.cust.phone.trim() : null).filter(Boolean));
+    let repeatCount = 0;
+    qPhones.forEach(ph => {
+      periodPhones.add(ph);
+      if (visitCounts[ph] > 1) {
+        repeatCount++;
+        periodRepeatPhones.add(ph);
+      }
+    });
+    const repeatPct = qPhones.size > 0 ? Math.round((repeatCount / qPhones.size) * 100) : 0;
+    const avgStaff = Math.round(q.months.reduce((acc, mKey) => acc + (data.execData.staff[mKey] || 7), 0) / q.months.length);
+
+    totalRev += rev; totalExp += exp; totalKids += kids; totalSessions += sessions; totalBirthdays += birthdays;
+
+    qRows.push({
+      key: q.key, name: q.name, revenue: rev, expenses: exp, gap,
+      kids, sessions, birthdays, repeatPct, staff: avgStaff,
+      salesCount: qSales.length, uniqueFamilies: qPhones.size, repeatFamilies: repeatCount
+    });
+  });
+
+  const overallRepeatPct = periodPhones.size > 0 ? Math.round((periodRepeatPhones.size / periodPhones.size) * 100) : 0;
+  const q1Rev = qRows[0] ? qRows[0].revenue : 0;
+  const q2Rev = qRows[1] ? qRows[1].revenue : 0;
+  const q2Gap = qRows[1] ? qRows[1].gap : 0;
+  const qGrowth = q1Rev > 0 ? Math.round(((q2Rev - q1Rev) / q1Rev) * 100) : 0;
+  const growthStr = qGrowth >= 0 ? `+${qGrowth}% (Q2 vs Q1)` : `${qGrowth}% (Q2 vs Q1)`;
+
+  const cats = calcCategoryShares(periodSales);
+
+  return {
+    periodType: 'quarterly',
+    rows: qRows,
+    monthRows: qRows,
+    totals: { revenue: totalRev, expenses: totalExp, kids: totalKids, sessions: totalSessions, birthdays: totalBirthdays, repeatPct: overallRepeatPct, staff: qRows[1] ? qRows[1].staff : 7 },
+    glance: {
+      revLabel: 'Closed H1 Revenue', revVal: q1Rev + q2Rev,
+      kidsLabel: 'Total Kids (H1)', kidsVal: (qRows[0] ? qRows[0].kids : 0) + (qRows[1] ? qRows[1].kids : 0),
+      repeatLabel: 'Quarterly Repeat Rate', repeatVal: overallRepeatPct + '%',
+      teamLabel: 'Current Avg Staff', teamVal: qRows[1] ? qRows[1].staff : 7,
+      sessionsLabel: 'Quarterly Sessions', sessionsVal: totalSessions,
+      bdayLabel: 'Quarterly Birthdays', bdayVal: totalBirthdays,
+      benchLabel: 'Q2 Growth vs Q1', benchVal: growthStr,
+      gapLabel: 'Q2 Operating Gap/Surplus', gapVal: q2Gap,
+      totalRev: q1Rev + q2Rev,
+      totalSessions: totalSessions,
+      currentStaff: qRows[1] ? qRows[1].staff : 7,
+      totalKids: (qRows[0] ? qRows[0].kids : 0) + (qRows[1] ? qRows[1].kids : 0),
+      totalBirthdays: totalBirthdays,
+      sepGap: q2Gap,
+      repeatPct: overallRepeatPct,
+      sepRev: q2Rev
+    },
+    catShares: cats.catShares,
+    categoryRev: cats.catRev,
+    totalCatRev: cats.totalCatRev,
+    meta: {
+      title: 'Quarterly Executive Review — FY 2026-27',
+      subtitle: 'Q1 (Apr–Jun) & Q2 (Jul–Sep) Performance, Seasonal Trajectory & Forward Projections',
+      bannerTitle: 'SKYLIME | QUARTERLY PERFORMANCE (Q1 – Q4 FY 26-27)',
+      bannerSub: 'Consolidated 3-Month Trajectories, Seasonality & Operating Margins',
+      storyHeading: 'THE QUARTERLY PERFORMANCE NARRATIVE',
+      p1ButtonText: '📄 Page 1 - Quarterly Snapshot',
+      totalRowLabel: 'FULL YEAR CONSOLIDATED',
+      columns: ['Quarter (FY 26-27)', 'Revenue (₹)', 'Expenses (₹)', 'Surplus / Gap (₹)', 'Kids Served', 'Activities / Sessions', 'Birthdays / Events', 'Repeat Families %', 'Avg Staff']
+    }
+  };
+}
+
+// 4. Monthly Metrics (Weekly Breakdown of Selected Month)
+function calculateMonthlyMetrics(allSales, visitCounts) {
+  const mInfo = ALL_FY_MONTHS.find(m => m.key === currentExecMonth) || ALL_FY_MONTHS[5];
+  const mSales = allSales.filter(s => s.date && getMonthKey(s.date) === currentExecMonth);
+
+  const weekRanges = [
+    { key: 'W_1', name: 'Week 1 (Days 1–7)', start: 1, end: 7, days: 7 },
+    { key: 'W_2', name: 'Week 2 (Days 8–14)', start: 8, end: 14, days: 7 },
+    { key: 'W_3', name: 'Week 3 (Days 15–21)', start: 15, end: 21, days: 7 },
+    { key: 'W_4', name: 'Week 4 (Days 22–28)', start: 22, end: 28, days: 7 },
+    { key: 'W_5', name: `Week 5 (Days 29–${mInfo.days})`, start: 29, end: mInfo.days, days: Math.max(1, mInfo.days - 28) }
+  ];
+
+  const wRows = [];
+  let monthRev = 0, monthKids = 0, monthSessions = 0, monthBirthdays = 0, monthInvoices = 0;
+  const monthPhones = new Set(), monthRepeatPhones = new Set();
+
+  weekRanges.forEach(w => {
+    const wSales = mSales.filter(s => {
+      const d = new Date(s.date).getDate();
+      return d >= w.start && d <= w.end;
+    });
+
+    const rev = wSales.reduce((acc, s) => acc + (s.total || 0), 0);
+    const invoices = wSales.length;
+
+    let kids = 0;
+    wSales.forEach(s => {
+      if (s.children && s.children.length > 0) kids += s.children.length;
+      else if (s.child && s.child.name) kids += 1;
+      else {
+        const svcQty = (s.items || []).filter(it => it.type === 'Service').reduce((sum, it) => sum + (it.cQty || 1), 0);
+        kids += svcQty > 0 ? svcQty : 1;
+      }
+    });
+
+    let sessions = 0;
+    wSales.forEach(s => {
+      (s.items || []).forEach(it => { if (it.type === 'Service') sessions += (it.cQty || 1); });
+    });
+
+    let birthdays = 0;
+    wSales.forEach(s => {
+      const isBday = (s.items || []).some(it => /birth|bday|party|event|celebrat/i.test(it.name || '')) ||
+                     (s.note && /birth|bday|party|event/i.test(s.note));
+      if (isBday) birthdays += 1;
+    });
+
+    const wPhones = new Set(wSales.map(s => s.cust && s.cust.phone ? s.cust.phone.trim() : null).filter(Boolean));
+    wPhones.forEach(ph => {
+      monthPhones.add(ph);
+      if (visitCounts[ph] > 1) monthRepeatPhones.add(ph);
+    });
+
+    const dailyAvg = w.days > 0 ? Math.round(rev / w.days) : 0;
+
+    monthRev += rev; monthInvoices += invoices; monthKids += kids; monthSessions += sessions; monthBirthdays += birthdays;
+
+    wRows.push({
+      key: w.key, name: w.name, revenue: rev, invoices,
+      kids, sessions, birthdays, uniqueFamilies: wPhones.size, dailyAvg
+    });
+  });
+
+  const monthRepeatPct = monthPhones.size > 0 ? Math.round((monthRepeatPhones.size / monthPhones.size) * 100) : 0;
+  const monthExp = data.execData.expenses[currentExecMonth] !== undefined ? data.execData.expenses[currentExecMonth] : 0;
+  const monthStaff = data.execData.staff[currentExecMonth] !== undefined ? data.execData.staff[currentExecMonth] : 7;
+  const monthGap = monthRev - monthExp;
+  const monthDailyAvg = mInfo.days > 0 ? Math.round(monthRev / mInfo.days) : 0;
+
+  const cats = calcCategoryShares(mSales);
+
+  return {
+    periodType: 'monthly',
+    rows: wRows,
+    monthRows: wRows,
+    totals: {
+      revenue: monthRev, invoices: monthInvoices, kids: monthKids, sessions: monthSessions,
+      birthdays: monthBirthdays, uniqueFamilies: monthPhones.size, dailyAvg: monthDailyAvg,
+      expenses: monthExp, gap: monthGap, staff: monthStaff, repeatPct: monthRepeatPct
     },
     glance: {
-      totalRev,
-      totalKids,
-      repeatPct: overallRepeatPct,
-      currentStaff,
-      totalSessions,
-      totalBirthdays,
-      sepRev,
-      sepGap
+      revLabel: `${mInfo.name} Total Revenue`, revVal: monthRev,
+      kidsLabel: `Kids Served (${mInfo.name})`, kidsVal: monthKids,
+      repeatLabel: `Repeat Families (${mInfo.name})`, repeatVal: monthRepeatPct + '%',
+      teamLabel: `Staff on Floor (${mInfo.name})`, teamVal: monthStaff,
+      sessionsLabel: `Activities (${mInfo.name})`, sessionsVal: monthSessions,
+      bdayLabel: `Birthdays (${mInfo.name})`, bdayVal: monthBirthdays,
+      benchLabel: 'Daily Avg Revenue', benchVal: '₹' + formatINR(monthDailyAvg) + ' / day',
+      gapLabel: `${mInfo.name} Operating Gap`, gapVal: monthGap,
+      totalRev: monthRev,
+      totalSessions: monthSessions,
+      currentStaff: monthStaff,
+      totalKids: monthKids,
+      totalBirthdays: monthBirthdays,
+      sepGap: monthGap,
+      repeatPct: monthRepeatPct,
+      sepRev: monthDailyAvg
     },
-    categoryRev,
-    catShares,
-    totalCatRev
+    catShares: cats.catShares,
+    categoryRev: cats.catRev,
+    totalCatRev: cats.totalCatRev,
+    meta: {
+      title: `Monthly Executive Snapshot — ${mInfo.name} ${mInfo.key.split('-')[0]}`,
+      subtitle: `Detailed 5-Week Operational Breakdown, Revenue & Kids Traffic for ${mInfo.name}`,
+      bannerTitle: `SKYLIME | ${mInfo.name.toUpperCase()} PERFORMANCE SNAPSHOT`,
+      bannerSub: `1 ${mInfo.name} – ${mInfo.days} ${mInfo.name} ${mInfo.key.split('-')[0]} | Weekly Breakdown & Unit Metrics`,
+      storyHeading: `KEY FOCUS & OBSERVATION FOR ${mInfo.name.toUpperCase()}`,
+      p1ButtonText: `📄 Page 1 - ${mInfo.name} Snapshot`,
+      totalRowLabel: `${mInfo.name.toUpperCase()} TOTAL`,
+      columns: ['Week / Period', 'Revenue (₹)', 'Invoices', 'Kids Served', 'Activities / Sessions', 'Birthdays / Events', 'Unique Families', 'Daily Avg (₹)']
+    }
   };
+}
+
+// Master Dispatcher
+function calculateExecMetrics() {
+  ensureExecData();
+  const allSales = (data.sales || []).filter(s => !s.cancelled);
+
+  const visitCounts = {};
+  allSales.forEach(s => {
+    const ph = s.cust && s.cust.phone ? s.cust.phone.trim() : null;
+    if (ph) {
+      visitCounts[ph] = (visitCounts[ph] || 0) + 1;
+    }
+  });
+
+  if (currentExecPeriod === 'monthly') {
+    return calculateMonthlyMetrics(allSales, visitCounts);
+  } else if (currentExecPeriod === 'quarterly') {
+    return calculateQuarterlyMetrics(allSales, visitCounts);
+  } else if (currentExecPeriod === 'annual') {
+    return calculateAnnualMetrics(allSales, visitCounts);
+  } else {
+    return calculateSemiAnnualMetrics(allSales, visitCounts);
+  }
 }
 
 function renderExecDashboard() {
   const metrics = calculateExecMetrics();
 
-  // 1. Render Table Rows
+  // 1. Update Headings & Banner
+  const hTitle = document.getElementById('exec-header-title');
+  if (hTitle) hTitle.innerText = metrics.meta.title;
+
+  const hSub = document.getElementById('exec-header-subtitle');
+  if (hSub) hSub.innerText = metrics.meta.subtitle;
+
+  const bTitle = document.getElementById('exec-banner-title');
+  if (bTitle) bTitle.innerText = metrics.meta.bannerTitle;
+
+  const bSub = document.getElementById('exec-banner-sub');
+  if (bSub) bSub.innerText = metrics.meta.bannerSub;
+
+  const sHeading = document.getElementById('exec-story-heading');
+  if (sHeading) sHeading.innerText = metrics.meta.storyHeading;
+
+  const p1Btn = document.getElementById('btn-exec-p1');
+  if (p1Btn) p1Btn.innerText = metrics.meta.p1ButtonText;
+
+  // 2. Render Table Headers
+  const thead = document.getElementById('exec-table-head');
+  if (thead) {
+    let thHtml = '<tr>';
+    metrics.meta.columns.forEach((col, idx) => {
+      const align = idx === 0 ? 'text-align:left;' : (idx === 1 || idx === 2 ? 'text-align:right;' : 'text-align:center;');
+      thHtml += `<th style="${align}">${col}</th>`;
+    });
+    thHtml += '</tr>';
+    thead.innerHTML = thHtml;
+  }
+
+  // 3. Render Table Rows
   const tbody = document.getElementById('exec-table-body');
   if (tbody) {
     let html = '';
-    metrics.monthRows.forEach((m, idx) => {
-      const bg = idx % 2 === 1 ? 'style="background:#fbfcfe;"' : '';
+
+    if (metrics.periodType === 'monthly') {
+      // Monthly 5-week breakdown
+      metrics.rows.forEach((w, idx) => {
+        const bg = idx % 2 === 1 ? 'style="background:#fbfcfe;"' : '';
+        html += `
+          <tr ${bg}>
+            <td class="exec-clickable" onclick="openExecDrilldown('revenue', '${w.key}', '${w.name}')" title="Click to view transactions in ${w.name}"><strong>${w.name}</strong></td>
+            <td class="exec-clickable" onclick="openExecDrilldown('revenue', '${w.key}', '${w.name}')" style="text-align:right; font-family:'Space Grotesk',sans-serif;" title="Click to view sales">₹${formatINR(w.revenue)}</td>
+            <td style="text-align:center; font-family:'Space Grotesk',sans-serif;">${w.invoices}</td>
+            <td class="exec-clickable" onclick="openExecDrilldown('kids', '${w.key}', '${w.name}')" style="text-align:center;" title="Click to view kids served">${w.kids}</td>
+            <td class="exec-clickable" onclick="openExecDrilldown('activities', '${w.key}', '${w.name}')" style="text-align:center;" title="Click to view sessions">${w.sessions}</td>
+            <td class="exec-clickable" onclick="openExecDrilldown('birthdays', '${w.key}', '${w.name}')" style="text-align:center;" title="Click to view events">${w.birthdays}</td>
+            <td style="text-align:center; font-weight:600;">${w.uniqueFamilies}</td>
+            <td style="text-align:right; font-family:'Space Grotesk',sans-serif; font-weight:700; color:var(--teal);">₹${formatINR(w.dailyAvg)}</td>
+          </tr>
+        `;
+      });
+      // Month Total Row
       html += `
-        <tr ${bg}>
-          <td class="exec-clickable" onclick="openExecDrilldown('revenue', '${m.key}', '${m.name} 2026')" title="Click to view all ${m.name} transactions"><strong>${m.name}</strong></td>
-          <td class="exec-clickable" onclick="openExecDrilldown('revenue', '${m.key}', '${m.name} 2026')" style="text-align:right; font-family:'Space Grotesk',sans-serif;" title="Click to view ${m.name} sales invoices">₹${formatINR(m.revenue)}</td>
-          <td class="exec-clickable" onclick="openExecExpensesModal('${m.key}', '${m.name} 2026')" style="text-align:right; font-family:'Space Grotesk',sans-serif;" title="Click to edit ${m.name} expenses">₹${formatINR(m.expenses)}</td>
-          <td class="exec-clickable" onclick="openExecDrilldown('kids', '${m.key}', '${m.name} 2026')" style="text-align:center;" title="Click to view children served in ${m.name}">${m.kids}</td>
-          <td class="exec-clickable" onclick="openExecDrilldown('activities', '${m.key}', '${m.name} 2026')" style="text-align:center;" title="Click to view activities/sessions in ${m.name}">${m.sessions}</td>
-          <td class="exec-clickable" onclick="openExecDrilldown('birthdays', '${m.key}', '${m.name} 2026')" style="text-align:center;" title="Click to view birthday events in ${m.name}">${m.birthdays}</td>
-          <td class="exec-clickable" onclick="openExecDrilldown('repeat', '${m.key}', '${m.name} 2026')" style="text-align:center; font-weight:600;" title="Click to view repeat families in ${m.name}">${m.repeatPct}%</td>
-          <td class="exec-clickable" onclick="openExecStaffModal('${m.key}', '${m.name} 2026')" style="text-align:center;" title="Click to view/edit staff in ${m.name}">${m.staff}</td>
+        <tr class="exec-table-total">
+          <td class="exec-clickable" onclick="openExecDrilldown('revenue', '${currentExecMonth}', '${metrics.meta.totalRowLabel}')"><strong>${metrics.meta.totalRowLabel}</strong></td>
+          <td class="exec-clickable" onclick="openExecDrilldown('revenue', '${currentExecMonth}', '${metrics.meta.totalRowLabel}')" style="text-align:right; font-family:'Space Grotesk',sans-serif;">₹${formatINR(metrics.totals.revenue)}</td>
+          <td style="text-align:center; font-family:'Space Grotesk',sans-serif;">${metrics.totals.invoices}</td>
+          <td class="exec-clickable" onclick="openExecDrilldown('kids', '${currentExecMonth}', '${metrics.meta.totalRowLabel}')" style="text-align:center;">${metrics.totals.kids}</td>
+          <td class="exec-clickable" onclick="openExecDrilldown('activities', '${currentExecMonth}', '${metrics.meta.totalRowLabel}')" style="text-align:center;">${metrics.totals.sessions}</td>
+          <td class="exec-clickable" onclick="openExecDrilldown('birthdays', '${currentExecMonth}', '${metrics.meta.totalRowLabel}')" style="text-align:center;">${metrics.totals.birthdays}</td>
+          <td style="text-align:center; font-weight:800;">${metrics.totals.uniqueFamilies}</td>
+          <td style="text-align:right; font-family:'Space Grotesk',sans-serif; font-weight:800; color:#064e3b;">₹${formatINR(metrics.totals.dailyAvg)}</td>
         </tr>
       `;
-    });
 
-    // Total Row
-    html += `
-      <tr class="exec-table-total">
-        <td class="exec-clickable" onclick="openExecDrilldown('revenue', 'all', 'All 6 Months Total')" title="Click to view all 6-month transactions"><strong>6-MONTH TOTAL / CURRENT</strong></td>
-        <td class="exec-clickable" onclick="openExecDrilldown('revenue', 'all', 'All 6 Months Total')" style="text-align:right; font-family:'Space Grotesk',sans-serif;" title="Click to view all 6-month sales">₹${formatINR(metrics.totals.revenue)}</td>
-        <td class="exec-clickable" onclick="openExecExpensesModal('all', 'All 6 Months Total')" style="text-align:right; font-family:'Space Grotesk',sans-serif;" title="Click to view total expenses">₹${formatINR(metrics.totals.expenses)}</td>
-        <td class="exec-clickable" onclick="openExecDrilldown('kids', 'all', 'All 6 Months Total')" style="text-align:center;" title="Click to view all children served">${metrics.totals.kids}</td>
-        <td class="exec-clickable" onclick="openExecDrilldown('activities', 'all', 'All 6 Months Total')" style="text-align:center;" title="Click to view all sessions conducted">${metrics.totals.sessions}</td>
-        <td class="exec-clickable" onclick="openExecDrilldown('birthdays', 'all', 'All 6 Months Total')" style="text-align:center;" title="Click to view all birthday bookings">${metrics.totals.birthdays}</td>
-        <td class="exec-clickable" onclick="openExecDrilldown('repeat', 'all', 'All 6 Months Total')" style="text-align:center;" title="Click to view overall repeat customer rate">${metrics.totals.repeatPct}%</td>
-        <td class="exec-clickable" onclick="openExecStaffModal('2026-09', 'Current Team (September 2026)')" style="text-align:center;" title="Click to view current staff">${metrics.totals.staff}</td>
-      </tr>
-    `;
+    } else if (metrics.periodType === 'quarterly') {
+      // Quarterly rows
+      metrics.rows.forEach((q, idx) => {
+        const bg = idx % 2 === 1 ? 'style="background:#fbfcfe;"' : '';
+        const gapColor = q.gap >= 0 ? '#059669' : 'var(--accent)';
+        const gapSign = q.gap >= 0 ? '+₹' : '-₹';
+        html += `
+          <tr ${bg}>
+            <td class="exec-clickable" onclick="openExecDrilldown('revenue', '${q.key}', '${q.name}')" title="Click to view ${q.name} transactions"><strong>${q.name}</strong></td>
+            <td class="exec-clickable" onclick="openExecDrilldown('revenue', '${q.key}', '${q.name}')" style="text-align:right; font-family:'Space Grotesk',sans-serif;" title="Click to view sales">₹${formatINR(q.revenue)}</td>
+            <td style="text-align:right; font-family:'Space Grotesk',sans-serif;">₹${formatINR(q.expenses)}</td>
+            <td style="text-align:right; font-family:'Space Grotesk',sans-serif; font-weight:700; color:${gapColor};">${gapSign}${formatINR(Math.abs(q.gap))}</td>
+            <td class="exec-clickable" onclick="openExecDrilldown('kids', '${q.key}', '${q.name}')" style="text-align:center;">${q.kids}</td>
+            <td class="exec-clickable" onclick="openExecDrilldown('activities', '${q.key}', '${q.name}')" style="text-align:center;">${q.sessions}</td>
+            <td class="exec-clickable" onclick="openExecDrilldown('birthdays', '${q.key}', '${q.name}')" style="text-align:center;">${q.birthdays}</td>
+            <td class="exec-clickable" onclick="openExecDrilldown('repeat', '${q.key}', '${q.name}')" style="text-align:center; font-weight:600;">${q.repeatPct}%</td>
+            <td style="text-align:center;">${q.staff}</td>
+          </tr>
+        `;
+      });
+      // Quarterly Total Row
+      const totGap = metrics.totals.revenue - metrics.totals.expenses;
+      const totGapColor = totGap >= 0 ? '#064e3b' : 'var(--accent)';
+      const totGapSign = totGap >= 0 ? '+₹' : '-₹';
+      html += `
+        <tr class="exec-table-total">
+          <td class="exec-clickable" onclick="openExecDrilldown('revenue', 'all', '${metrics.meta.totalRowLabel}')"><strong>${metrics.meta.totalRowLabel}</strong></td>
+          <td class="exec-clickable" onclick="openExecDrilldown('revenue', 'all', '${metrics.meta.totalRowLabel}')" style="text-align:right; font-family:'Space Grotesk',sans-serif;">₹${formatINR(metrics.totals.revenue)}</td>
+          <td style="text-align:right; font-family:'Space Grotesk',sans-serif;">₹${formatINR(metrics.totals.expenses)}</td>
+          <td style="text-align:right; font-family:'Space Grotesk',sans-serif; font-weight:800; color:${totGapColor};">${totGapSign}${formatINR(Math.abs(totGap))}</td>
+          <td class="exec-clickable" onclick="openExecDrilldown('kids', 'all', '${metrics.meta.totalRowLabel}')" style="text-align:center;">${metrics.totals.kids}</td>
+          <td class="exec-clickable" onclick="openExecDrilldown('activities', 'all', '${metrics.meta.totalRowLabel}')" style="text-align:center;">${metrics.totals.sessions}</td>
+          <td class="exec-clickable" onclick="openExecDrilldown('birthdays', 'all', '${metrics.meta.totalRowLabel}')" style="text-align:center;">${metrics.totals.birthdays}</td>
+          <td class="exec-clickable" onclick="openExecDrilldown('repeat', 'all', '${metrics.meta.totalRowLabel}')" style="text-align:center;">${metrics.totals.repeatPct}%</td>
+          <td style="text-align:center;">${metrics.totals.staff}</td>
+        </tr>
+      `;
+
+    } else {
+      // Semi-Annual & Annual Views
+      metrics.rows.forEach((m, idx) => {
+        const bg = idx % 2 === 1 ? 'style="background:#fbfcfe;"' : '';
+        html += `
+          <tr ${bg}>
+            <td class="exec-clickable" onclick="openExecDrilldown('revenue', '${m.key}', '${m.name}')" title="Click to view all ${m.name} transactions"><strong>${m.name}</strong></td>
+            <td class="exec-clickable" onclick="openExecDrilldown('revenue', '${m.key}', '${m.name}')" style="text-align:right; font-family:'Space Grotesk',sans-serif;" title="Click to view ${m.name} sales">₹${formatINR(m.revenue)}</td>
+            <td class="exec-clickable" onclick="openExecExpensesModal('${m.key}', '${m.name}')" style="text-align:right; font-family:'Space Grotesk',sans-serif;" title="Click to edit ${m.name} expenses">₹${formatINR(m.expenses)}</td>
+            <td class="exec-clickable" onclick="openExecDrilldown('kids', '${m.key}', '${m.name}')" style="text-align:center;" title="Click to view children served in ${m.name}">${m.kids}</td>
+            <td class="exec-clickable" onclick="openExecDrilldown('activities', '${m.key}', '${m.name}')" style="text-align:center;" title="Click to view sessions in ${m.name}">${m.sessions}</td>
+            <td class="exec-clickable" onclick="openExecDrilldown('birthdays', '${m.key}', '${m.name}')" style="text-align:center;" title="Click to view events in ${m.name}">${m.birthdays}</td>
+            <td class="exec-clickable" onclick="openExecDrilldown('repeat', '${m.key}', '${m.name}')" style="text-align:center; font-weight:600;" title="Click to view repeat families in ${m.name}">${m.repeatPct}%</td>
+            <td class="exec-clickable" onclick="openExecStaffModal('${m.key}', '${m.name}')" style="text-align:center;" title="Click to view/edit staff in ${m.name}">${m.staff}</td>
+          </tr>
+        `;
+      });
+      // Total Row
+      html += `
+        <tr class="exec-table-total">
+          <td class="exec-clickable" onclick="openExecDrilldown('revenue', 'all', '${metrics.meta.totalRowLabel}')" title="Click to view all period transactions"><strong>${metrics.meta.totalRowLabel}</strong></td>
+          <td class="exec-clickable" onclick="openExecDrilldown('revenue', 'all', '${metrics.meta.totalRowLabel}')" style="text-align:right; font-family:'Space Grotesk',sans-serif;">₹${formatINR(metrics.totals.revenue)}</td>
+          <td class="exec-clickable" onclick="openExecExpensesModal('all', '${metrics.meta.totalRowLabel}')" style="text-align:right; font-family:'Space Grotesk',sans-serif;">₹${formatINR(metrics.totals.expenses)}</td>
+          <td class="exec-clickable" onclick="openExecDrilldown('kids', 'all', '${metrics.meta.totalRowLabel}')" style="text-align:center;">${metrics.totals.kids}</td>
+          <td class="exec-clickable" onclick="openExecDrilldown('activities', 'all', '${metrics.meta.totalRowLabel}')" style="text-align:center;">${metrics.totals.sessions}</td>
+          <td class="exec-clickable" onclick="openExecDrilldown('birthdays', 'all', '${metrics.meta.totalRowLabel}')" style="text-align:center;">${metrics.totals.birthdays}</td>
+          <td class="exec-clickable" onclick="openExecDrilldown('repeat', 'all', '${metrics.meta.totalRowLabel}')" style="text-align:center;">${metrics.totals.repeatPct}%</td>
+          <td class="exec-clickable" onclick="openExecStaffModal('2026-09', 'Current Team')" style="text-align:center;">${metrics.totals.staff}</td>
+        </tr>
+      `;
+    }
     tbody.innerHTML = html;
   }
 
-  // 2. Render AT A GLANCE Cards
+  // 4. Render AT A GLANCE Cards
+  const gRevLabel = document.getElementById('exec-glance-rev-label');
   const gRev = document.getElementById('exec-glance-rev');
-  if (gRev) gRev.innerText = '₹' + formatINR(metrics.glance.totalRev);
+  if (gRevLabel) gRevLabel.innerText = metrics.glance.revLabel;
+  if (gRev) gRev.innerText = '₹' + formatINR(metrics.glance.revVal);
 
+  const gKidsLabel = document.getElementById('exec-glance-kids-label');
   const gKids = document.getElementById('exec-glance-kids');
-  if (gKids) gKids.innerText = metrics.glance.totalKids;
+  if (gKidsLabel) gKidsLabel.innerText = metrics.glance.kidsLabel;
+  if (gKids) gKids.innerText = metrics.glance.kidsVal;
 
+  const gRepeatLabel = document.getElementById('exec-glance-repeat-label');
   const gRepeat = document.getElementById('exec-glance-repeat');
-  if (gRepeat) gRepeat.innerText = metrics.glance.repeatPct + '%';
+  if (gRepeatLabel) gRepeatLabel.innerText = metrics.glance.repeatLabel;
+  if (gRepeat) gRepeat.innerText = metrics.glance.repeatVal;
 
+  const gTeamLabel = document.getElementById('exec-glance-team-label');
   const gTeam = document.getElementById('exec-glance-team');
-  if (gTeam) gTeam.innerText = metrics.glance.currentStaff;
+  if (gTeamLabel) gTeamLabel.innerText = metrics.glance.teamLabel;
+  if (gTeam) gTeam.innerText = metrics.glance.teamVal;
 
+  const gSessionsLabel = document.getElementById('exec-glance-sessions-label');
   const gSessions = document.getElementById('exec-glance-sessions');
-  if (gSessions) gSessions.innerText = metrics.glance.totalSessions;
+  if (gSessionsLabel) gSessionsLabel.innerText = metrics.glance.sessionsLabel;
+  if (gSessions) gSessions.innerText = metrics.glance.sessionsVal;
 
+  const gBdayLabel = document.getElementById('exec-glance-birthdays-label');
   const gBirthdays = document.getElementById('exec-glance-birthdays');
-  if (gBirthdays) gBirthdays.innerText = metrics.glance.totalBirthdays;
+  if (gBdayLabel) gBdayLabel.innerText = metrics.glance.bdayLabel;
+  if (gBirthdays) gBirthdays.innerText = metrics.glance.bdayVal;
 
+  const gBenchLabel = document.getElementById('exec-glance-bench-label');
   const gSepRev = document.getElementById('exec-glance-seprev');
-  if (gSepRev) gSepRev.innerText = '₹' + formatINR(metrics.glance.sepRev);
+  if (gBenchLabel) gBenchLabel.innerText = metrics.glance.benchLabel;
+  if (gSepRev) gSepRev.innerText = metrics.glance.benchVal;
 
+  const gGapLabel = document.getElementById('exec-glance-gap-label');
   const gGap = document.getElementById('exec-glance-gap');
+  if (gGapLabel) gGapLabel.innerText = metrics.glance.gapLabel;
   if (gGap) {
-    const gap = metrics.glance.sepGap;
+    const gap = metrics.glance.gapVal;
     if (gap >= 0) {
       gGap.innerText = '+₹' + formatINR(gap) + ' (Surplus)';
       gGap.style.color = '#059669';
@@ -4040,34 +5214,34 @@ function renderExecDashboard() {
     }
   }
 
-  // 3. Render Quote Story
+  // 5. Render Quote Story
   const quoteText = document.getElementById('exec-quote-text');
   if (quoteText && data.execData && data.execData.story) {
     quoteText.innerText = data.execData.story;
   }
 
-  // 4. Render Category Shares
+  // 6. Render Category Shares
   const opPct = document.getElementById('exec-cat-openplay-pct');
   const opBar = document.getElementById('exec-cat-openplay-bar');
-  if (opPct) opPct.innerText = metrics.catShares.openPlay + '%';
+  if (opPct) opPct.innerText = (metrics.categoryRev && metrics.categoryRev.openPlay !== undefined ? '₹' + formatINR(metrics.categoryRev.openPlay) + '  •  ' : '') + metrics.catShares.openPlay + '%';
   if (opBar) opBar.style.width = metrics.catShares.openPlay + '%';
 
   const actPct = document.getElementById('exec-cat-act-pct');
   const actBar = document.getElementById('exec-cat-act-bar');
-  if (actPct) actPct.innerText = metrics.catShares.activities + '%';
+  if (actPct) actPct.innerText = (metrics.categoryRev && metrics.categoryRev.activities !== undefined ? '₹' + formatINR(metrics.categoryRev.activities) + '  •  ' : '') + metrics.catShares.activities + '%';
   if (actBar) actBar.style.width = metrics.catShares.activities + '%';
 
   const bdayPct = document.getElementById('exec-cat-bday-pct');
   const bdayBar = document.getElementById('exec-cat-bday-bar');
-  if (bdayPct) bdayPct.innerText = metrics.catShares.birthdays + '%';
+  if (bdayPct) bdayPct.innerText = (metrics.categoryRev && metrics.categoryRev.birthdays !== undefined ? '₹' + formatINR(metrics.categoryRev.birthdays) + '  •  ' : '') + metrics.catShares.birthdays + '%';
   if (bdayBar) bdayBar.style.width = metrics.catShares.birthdays + '%';
 
   const otherPct = document.getElementById('exec-cat-other-pct');
   const otherBar = document.getElementById('exec-cat-other-bar');
-  if (otherPct) otherPct.innerText = metrics.catShares.other + '%';
+  if (otherPct) otherPct.innerText = (metrics.categoryRev && metrics.categoryRev.other !== undefined ? '₹' + formatINR(metrics.categoryRev.other) + '  •  ' : '') + metrics.catShares.other + '%';
   if (otherBar) otherBar.style.width = metrics.catShares.other + '%';
 
-  // 5. Render Page 2
+  // 7. Render Page 2
   renderExecPage2();
 }
 
@@ -4290,11 +5464,38 @@ let currentDrillTitle = '';
 
 function openExecDrilldown(type, monthKey, title) {
   const allSales = (data.sales || []).filter(s => !s.cancelled);
-  const targetSales = monthKey === 'all'
-    ? allSales.filter(s => s.date && ['2026-04','2026-05','2026-06','2026-07','2026-08','2026-09'].includes(getMonthKey(s.date)))
-    : allSales.filter(s => s.date && getMonthKey(s.date) === monthKey);
+  let targetSales = [];
 
-  const monthLabel = title || (monthKey === 'all' ? 'All 6 Months Total' : monthKey);
+  if (monthKey && monthKey.startsWith('W_')) {
+    const wNum = parseInt(monthKey.split('_')[1]);
+    const ranges = [[1, 7], [8, 14], [15, 21], [22, 28], [29, 31]];
+    const rng = ranges[wNum - 1] || [1, 31];
+    targetSales = allSales.filter(s => {
+      if (!s.date || getMonthKey(s.date) !== currentExecMonth) return false;
+      const d = new Date(s.date).getDate();
+      return d >= rng[0] && d <= rng[1];
+    });
+  } else if (monthKey === 'Q1') {
+    targetSales = allSales.filter(s => s.date && ['2026-04','2026-05','2026-06'].includes(getMonthKey(s.date)));
+  } else if (monthKey === 'Q2') {
+    targetSales = allSales.filter(s => s.date && ['2026-07','2026-08','2026-09'].includes(getMonthKey(s.date)));
+  } else if (monthKey === 'Q3') {
+    targetSales = allSales.filter(s => s.date && ['2026-10','2026-11','2026-12'].includes(getMonthKey(s.date)));
+  } else if (monthKey === 'Q4') {
+    targetSales = allSales.filter(s => s.date && ['2027-01','2027-02','2027-03'].includes(getMonthKey(s.date)));
+  } else if (monthKey === 'all') {
+    if (currentExecPeriod === 'monthly') {
+      targetSales = allSales.filter(s => s.date && getMonthKey(s.date) === currentExecMonth);
+    } else if (currentExecPeriod === 'annual' || currentExecPeriod === 'quarterly') {
+      targetSales = allSales.filter(s => s.date && ALL_FY_MONTHS.map(m => m.key).includes(getMonthKey(s.date)));
+    } else {
+      targetSales = allSales.filter(s => s.date && ['2026-04','2026-05','2026-06','2026-07','2026-08','2026-09'].includes(getMonthKey(s.date)));
+    }
+  } else {
+    targetSales = allSales.filter(s => s.date && getMonthKey(s.date) === monthKey);
+  }
+
+  const monthLabel = title || (monthKey === 'all' ? 'Period Total' : monthKey);
   currentDrillTitle = `${type.toUpperCase()} — ${monthLabel}`;
 
   const kpis = document.getElementById('exec-drill-kpis');
@@ -5091,6 +6292,10 @@ function exportExecutiveReportXML() {
   saveExecLearnings(true);
   const m = calculateExecMetrics();
   const l = (data.execData && data.execData.learnings) || {};
+  const colCount = m.meta.columns.length;
+  const mergeAcross = colCount - 1;
+  const lastValMerge = colCount > 8 ? ` ss:MergeAcross="${colCount - 8}"` : '';
+  const sheet1Name = m.periodType === 'monthly' ? 'Page 1 - Month Snapshot' : (m.periodType === 'quarterly' ? 'Page 1 - Quarterly Snapshot' : (m.periodType === 'annual' ? 'Page 1 - Annual Snapshot' : 'Page 1 - Six Month Snapshot'));
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <?mso-application progid="Excel.Sheet"?>
@@ -5533,42 +6738,59 @@ function exportExecutiveReportXML() {
    </Borders>
   </Style>
  </Styles>
- <Worksheet ss:Name="Page 1 - Six Month Snapshot">
+ <Worksheet ss:Name="${escXml(sheet1Name)}">
   <Table ss:DefaultRowHeight="20">
-   <Column ss:Width="170"/>
-   <Column ss:Width="130"/>
-   <Column ss:Width="130"/>
-   <Column ss:Width="110"/>
-   <Column ss:Width="150"/>
-   <Column ss:Width="140"/>
-   <Column ss:Width="140"/>
-   <Column ss:Width="90"/>
+   <Column ss:Width="160"/>
+   ${Array.from({length: Math.max(1, colCount - 1)}).map(() => '<Column ss:Width="125"/>').join('\n   ')}
 
    <!-- Title Banner -->
    <Row ss:Height="28">
-    <Cell ss:StyleID="BannerTitle" ss:MergeAcross="7"><Data ss:Type="String">  SKYLIME | OUR FIRST SIX MONTHS</Data></Cell>
+    <Cell ss:StyleID="BannerTitle" ss:MergeAcross="${mergeAcross}"><Data ss:Type="String">  ${escXml(m.meta.bannerTitle)}</Data></Cell>
    </Row>
    <Row ss:Height="20">
-    <Cell ss:StyleID="BannerSubtitle" ss:MergeAcross="7"><Data ss:Type="String">  7 April – 30 September 2026 | Live POS Billing Database</Data></Cell>
+    <Cell ss:StyleID="BannerSubtitle" ss:MergeAcross="${mergeAcross}"><Data ss:Type="String">  ${escXml(m.meta.bannerSub)}</Data></Cell>
    </Row>
    <Row ss:Height="10"></Row>
 
-   <!-- Monthly Performance Table Header -->
+   <!-- Performance Table Header -->
    <Row ss:Height="24">
-    <Cell ss:StyleID="ThLeft"><Data ss:Type="String">Month</Data></Cell>
-    <Cell ss:StyleID="ThRight"><Data ss:Type="String">Revenue (₹)</Data></Cell>
-    <Cell ss:StyleID="ThRight"><Data ss:Type="String">Expenses (₹)</Data></Cell>
-    <Cell ss:StyleID="ThCenter"><Data ss:Type="String">Kids Served</Data></Cell>
-    <Cell ss:StyleID="ThCenter"><Data ss:Type="String">Activities / Sessions</Data></Cell>
-    <Cell ss:StyleID="ThCenter"><Data ss:Type="String">Birthdays / Events</Data></Cell>
-    <Cell ss:StyleID="ThCenter"><Data ss:Type="String">Repeat Families %</Data></Cell>
-    <Cell ss:StyleID="ThCenter"><Data ss:Type="String">Staff</Data></Cell>
+    ${m.meta.columns.map((col, idx) => {
+      const align = idx === 0 ? 'ThLeft' : (col.includes('(₹)') ? 'ThRight' : 'ThCenter');
+      return `<Cell ss:StyleID="${align}"><Data ss:Type="String">${escXml(col)}</Data></Cell>`;
+    }).join('\n    ')}
    </Row>
 
-   <!-- Monthly Data Rows -->
-   ${m.monthRows.map((r, idx) => {
+   <!-- Performance Data Rows -->
+   ${m.rows.map((r, idx) => {
      const alt = (idx % 2 === 1) ? 'Alt' : '';
-     return `
+     if (m.periodType === 'monthly') {
+       return `
+   <Row ss:Height="22">
+    <Cell ss:StyleID="TdText${alt}"><Data ss:Type="String">${escXml(r.name)}</Data></Cell>
+    <Cell ss:StyleID="TdCurrency${alt}"><Data ss:Type="String">₹${formatINR(r.revenue)}</Data></Cell>
+    <Cell ss:StyleID="TdNum${alt}"><Data ss:Type="Number">${r.invoices}</Data></Cell>
+    <Cell ss:StyleID="TdNum${alt}"><Data ss:Type="Number">${r.kids}</Data></Cell>
+    <Cell ss:StyleID="TdNum${alt}"><Data ss:Type="Number">${r.sessions}</Data></Cell>
+    <Cell ss:StyleID="TdNum${alt}"><Data ss:Type="Number">${r.birthdays}</Data></Cell>
+    <Cell ss:StyleID="TdNum${alt}"><Data ss:Type="Number">${r.uniqueFamilies}</Data></Cell>
+    <Cell ss:StyleID="TdCurrency${alt}"><Data ss:Type="String">₹${formatINR(r.dailyAvg)}</Data></Cell>
+   </Row>`;
+     } else if (m.periodType === 'quarterly') {
+       const gapSign = r.gap >= 0 ? '+₹' : '-₹';
+       return `
+   <Row ss:Height="22">
+    <Cell ss:StyleID="TdText${alt}"><Data ss:Type="String">${escXml(r.name)}</Data></Cell>
+    <Cell ss:StyleID="TdCurrency${alt}"><Data ss:Type="String">₹${formatINR(r.revenue)}</Data></Cell>
+    <Cell ss:StyleID="TdCurrency${alt}"><Data ss:Type="String">₹${formatINR(r.expenses)}</Data></Cell>
+    <Cell ss:StyleID="TdCurrency${alt}"><Data ss:Type="String">${gapSign}${formatINR(Math.abs(r.gap))}</Data></Cell>
+    <Cell ss:StyleID="TdNum${alt}"><Data ss:Type="Number">${r.kids}</Data></Cell>
+    <Cell ss:StyleID="TdNum${alt}"><Data ss:Type="Number">${r.sessions}</Data></Cell>
+    <Cell ss:StyleID="TdNum${alt}"><Data ss:Type="Number">${r.birthdays}</Data></Cell>
+    <Cell ss:StyleID="TdCenter${alt}"><Data ss:Type="String">${r.repeatPct}%</Data></Cell>
+    <Cell ss:StyleID="TdNum${alt}"><Data ss:Type="Number">${r.staff}</Data></Cell>
+   </Row>`;
+     } else {
+       return `
    <Row ss:Height="22">
     <Cell ss:StyleID="TdText${alt}"><Data ss:Type="String">${escXml(r.name)}</Data></Cell>
     <Cell ss:StyleID="TdCurrency${alt}"><Data ss:Type="String">₹${formatINR(r.revenue)}</Data></Cell>
@@ -5579,93 +6801,111 @@ function exportExecutiveReportXML() {
     <Cell ss:StyleID="TdCenter${alt}"><Data ss:Type="String">${r.repeatPct}%</Data></Cell>
     <Cell ss:StyleID="TdNum${alt}"><Data ss:Type="Number">${r.staff}</Data></Cell>
    </Row>`;
+     }
    }).join('')}
 
    <!-- Total Row -->
    <Row ss:Height="25">
-    <Cell ss:StyleID="TotalLabel"><Data ss:Type="String">6-MONTH TOTAL / CURRENT</Data></Cell>
+    <Cell ss:StyleID="TotalLabel"><Data ss:Type="String">${escXml(m.meta.totalRowLabel)}</Data></Cell>
     <Cell ss:StyleID="TotalCurrency"><Data ss:Type="String">₹${formatINR(m.totals.revenue)}</Data></Cell>
+    ${m.periodType === 'monthly' ? `
+    <Cell ss:StyleID="TotalCenter"><Data ss:Type="Number">${m.totals.invoices}</Data></Cell>
+    <Cell ss:StyleID="TotalCenter"><Data ss:Type="Number">${m.totals.kids}</Data></Cell>
+    <Cell ss:StyleID="TotalCenter"><Data ss:Type="Number">${m.totals.sessions}</Data></Cell>
+    <Cell ss:StyleID="TotalCenter"><Data ss:Type="Number">${m.totals.birthdays}</Data></Cell>
+    <Cell ss:StyleID="TotalCenter"><Data ss:Type="Number">${m.totals.uniqueFamilies}</Data></Cell>
+    <Cell ss:StyleID="TotalCurrency"><Data ss:Type="String">₹${formatINR(m.totals.dailyAvg)}</Data></Cell>
+    ` : m.periodType === 'quarterly' ? `
+    <Cell ss:StyleID="TotalCurrency"><Data ss:Type="String">₹${formatINR(m.totals.expenses)}</Data></Cell>
+    <Cell ss:StyleID="TotalCurrency"><Data ss:Type="String">${(m.totals.revenue - m.totals.expenses >= 0 ? '+₹' : '-₹') + formatINR(Math.abs(m.totals.revenue - m.totals.expenses))}</Data></Cell>
+    <Cell ss:StyleID="TotalCenter"><Data ss:Type="Number">${m.totals.kids}</Data></Cell>
+    <Cell ss:StyleID="TotalCenter"><Data ss:Type="Number">${m.totals.sessions}</Data></Cell>
+    <Cell ss:StyleID="TotalCenter"><Data ss:Type="Number">${m.totals.birthdays}</Data></Cell>
+    <Cell ss:StyleID="TotalCenter"><Data ss:Type="String">${m.totals.repeatPct}%</Data></Cell>
+    <Cell ss:StyleID="TotalCenter"><Data ss:Type="Number">${m.totals.staff}</Data></Cell>
+    ` : `
     <Cell ss:StyleID="TotalCurrency"><Data ss:Type="String">₹${formatINR(m.totals.expenses)}</Data></Cell>
     <Cell ss:StyleID="TotalCenter"><Data ss:Type="Number">${m.totals.kids}</Data></Cell>
     <Cell ss:StyleID="TotalCenter"><Data ss:Type="Number">${m.totals.sessions}</Data></Cell>
     <Cell ss:StyleID="TotalCenter"><Data ss:Type="Number">${m.totals.birthdays}</Data></Cell>
     <Cell ss:StyleID="TotalCenter"><Data ss:Type="String">${m.totals.repeatPct}%</Data></Cell>
     <Cell ss:StyleID="TotalCenter"><Data ss:Type="Number">${m.totals.staff}</Data></Cell>
+    `}
    </Row>
    <Row ss:Height="14"></Row>
 
    <!-- AT A GLANCE Section -->
    <Row ss:Height="24">
-    <Cell ss:StyleID="SectionNavy" ss:MergeAcross="7"><Data ss:Type="String">  AT A GLANCE</Data></Cell>
+    <Cell ss:StyleID="SectionNavy" ss:MergeAcross="${mergeAcross}"><Data ss:Type="String">  AT A GLANCE</Data></Cell>
    </Row>
    <Row ss:Height="22">
-    <Cell ss:StyleID="KpiLabel"><Data ss:Type="String">TOTAL REVENUE</Data></Cell>
-    <Cell ss:StyleID="KpiValTeal"><Data ss:Type="String">₹${formatINR(m.glance.totalRev)}</Data></Cell>
-    <Cell ss:StyleID="KpiLabel" ss:MergeAcross="1"><Data ss:Type="String">ACTIVITIES / SESSIONS</Data></Cell>
-    <Cell ss:StyleID="KpiVal" ss:MergeAcross="1"><Data ss:Type="Number">${m.glance.totalSessions}</Data></Cell>
-    <Cell ss:StyleID="KpiLabel"><Data ss:Type="String">CURRENT TEAM</Data></Cell>
-    <Cell ss:StyleID="KpiVal"><Data ss:Type="Number">${m.glance.currentStaff}</Data></Cell>
+    <Cell ss:StyleID="KpiLabel"><Data ss:Type="String">${escXml((m.glance.revLabel || 'TOTAL REVENUE').toUpperCase())}</Data></Cell>
+    <Cell ss:StyleID="KpiValTeal"><Data ss:Type="String">₹${formatINR(m.glance.revVal || 0)}</Data></Cell>
+    <Cell ss:StyleID="KpiLabel" ss:MergeAcross="1"><Data ss:Type="String">${escXml((m.glance.sessionsLabel || 'ACTIVITIES / SESSIONS').toUpperCase())}</Data></Cell>
+    <Cell ss:StyleID="KpiVal" ss:MergeAcross="1"><Data ss:Type="Number">${m.glance.sessionsVal || 0}</Data></Cell>
+    <Cell ss:StyleID="KpiLabel"><Data ss:Type="String">${escXml((m.glance.teamLabel || 'CURRENT TEAM').toUpperCase())}</Data></Cell>
+    <Cell ss:StyleID="KpiVal"${lastValMerge}><Data ss:Type="Number">${m.glance.teamVal || 0}</Data></Cell>
    </Row>
    <Row ss:Height="22">
-    <Cell ss:StyleID="KpiLabel"><Data ss:Type="String">KIDS SERVED</Data></Cell>
-    <Cell ss:StyleID="KpiVal"><Data ss:Type="Number">${m.glance.totalKids}</Data></Cell>
-    <Cell ss:StyleID="KpiLabel" ss:MergeAcross="1"><Data ss:Type="String">BIRTHDAYS / EVENTS</Data></Cell>
-    <Cell ss:StyleID="KpiVal" ss:MergeAcross="1"><Data ss:Type="Number">${m.glance.totalBirthdays}</Data></Cell>
-    <Cell ss:StyleID="KpiLabel"><Data ss:Type="String">SEP OPERATING GAP</Data></Cell>
-    <Cell ss:StyleID="KpiVal"><Data ss:Type="String">${(m.glance.sepGap >= 0 ? '+₹' : '-₹') + formatINR(Math.abs(m.glance.sepGap))}</Data></Cell>
+    <Cell ss:StyleID="KpiLabel"><Data ss:Type="String">${escXml((m.glance.kidsLabel || 'KIDS SERVED').toUpperCase())}</Data></Cell>
+    <Cell ss:StyleID="KpiVal"><Data ss:Type="Number">${m.glance.kidsVal || 0}</Data></Cell>
+    <Cell ss:StyleID="KpiLabel" ss:MergeAcross="1"><Data ss:Type="String">${escXml((m.glance.bdayLabel || 'BIRTHDAYS / EVENTS').toUpperCase())}</Data></Cell>
+    <Cell ss:StyleID="KpiVal" ss:MergeAcross="1"><Data ss:Type="Number">${m.glance.bdayVal || 0}</Data></Cell>
+    <Cell ss:StyleID="KpiLabel"><Data ss:Type="String">${escXml((m.glance.gapLabel || 'OPERATING GAP').toUpperCase())}</Data></Cell>
+    <Cell ss:StyleID="KpiVal"${lastValMerge}><Data ss:Type="String">${typeof m.glance.gapVal === 'number' ? (m.glance.gapVal >= 0 ? '+₹' : '-₹') + formatINR(Math.abs(m.glance.gapVal)) : m.glance.gapVal}</Data></Cell>
    </Row>
    <Row ss:Height="22">
-    <Cell ss:StyleID="KpiLabel"><Data ss:Type="String">REPEAT FAMILIES</Data></Cell>
-    <Cell ss:StyleID="KpiValGreen"><Data ss:Type="String">${m.glance.repeatPct}%</Data></Cell>
-    <Cell ss:StyleID="KpiLabel" ss:MergeAcross="1"><Data ss:Type="String">SEPTEMBER REVENUE</Data></Cell>
-    <Cell ss:StyleID="KpiValTeal" ss:MergeAcross="1"><Data ss:Type="String">₹${formatINR(m.glance.sepRev)}</Data></Cell>
+    <Cell ss:StyleID="KpiLabel"><Data ss:Type="String">${escXml((m.glance.repeatLabel || 'REPEAT FAMILIES').toUpperCase())}</Data></Cell>
+    <Cell ss:StyleID="KpiValGreen"><Data ss:Type="String">${m.glance.repeatVal}</Data></Cell>
+    <Cell ss:StyleID="KpiLabel" ss:MergeAcross="1"><Data ss:Type="String">${escXml((m.glance.benchLabel || 'BENCHMARK').toUpperCase())}</Data></Cell>
+    <Cell ss:StyleID="KpiValTeal" ss:MergeAcross="1"><Data ss:Type="String">${m.glance.benchVal}</Data></Cell>
     <Cell ss:StyleID="KpiLabel"><Data ss:Type="String">STATUS</Data></Cell>
-    <Cell ss:StyleID="KpiValGreen"><Data ss:Type="String">Active POS Database</Data></Cell>
+    <Cell ss:StyleID="KpiValGreen"${lastValMerge}><Data ss:Type="String">Active POS Database</Data></Cell>
    </Row>
    <Row ss:Height="14"></Row>
 
    <!-- Story Section -->
    <Row ss:Height="24">
-    <Cell ss:StyleID="SectionSlate" ss:MergeAcross="7"><Data ss:Type="String">  THE SIX-MONTH STORY IN ONE SENTENCE</Data></Cell>
+    <Cell ss:StyleID="SectionSlate" ss:MergeAcross="${mergeAcross}"><Data ss:Type="String">  ${escXml(m.meta.storyHeading)}</Data></Cell>
    </Row>
    <Row ss:Height="32">
-    <Cell ss:StyleID="StoryBox" ss:MergeAcross="7"><Data ss:Type="String">"${escXml(data.execData.story || 'Skylime has moved from launch and experimentation to building a base of repeat families, a stronger activity calendar and growing birthday/event traction.')}"</Data></Cell>
+    <Cell ss:StyleID="StoryBox" ss:MergeAcross="${mergeAcross}"><Data ss:Type="String">"${escXml(data.execData.story || 'Skylime has moved from launch and experimentation to building a base of repeat families, a stronger activity calendar and growing birthday/event traction.')}"</Data></Cell>
    </Row>
    <Row ss:Height="14"></Row>
 
    <!-- Category Breakdown Section -->
    <Row ss:Height="24">
-    <Cell ss:StyleID="SectionSlate" ss:MergeAcross="7"><Data ss:Type="String">  WHAT ARE FAMILIES COMING FOR? (CATEGORY REVENUE SHARE)</Data></Cell>
+    <Cell ss:StyleID="SectionSlate" ss:MergeAcross="${mergeAcross}"><Data ss:Type="String">  WHAT ARE FAMILIES COMING FOR? (CATEGORY REVENUE SHARE)</Data></Cell>
    </Row>
    <Row ss:Height="22">
     <Cell ss:StyleID="ThLeft" ss:MergeAcross="2"><Data ss:Type="String">Category</Data></Cell>
     <Cell ss:StyleID="ThCenter" ss:MergeAcross="1"><Data ss:Type="String">Share %</Data></Cell>
-    <Cell ss:StyleID="ThRight" ss:MergeAcross="2"><Data ss:Type="String">Revenue (₹)</Data></Cell>
+    <Cell ss:StyleID="ThRight" ss:MergeAcross="${colCount - 5}"><Data ss:Type="String">Revenue (₹)</Data></Cell>
    </Row>
    <Row ss:Height="20">
     <Cell ss:StyleID="TdText" ss:MergeAcross="2"><Data ss:Type="String">Open Play</Data></Cell>
     <Cell ss:StyleID="TdCenter" ss:MergeAcross="1"><Data ss:Type="String">${m.catShares.openPlay}%</Data></Cell>
-    <Cell ss:StyleID="TdCurrency" ss:MergeAcross="2"><Data ss:Type="String">₹${formatINR(m.categoryRev.openPlay)}</Data></Cell>
+    <Cell ss:StyleID="TdCurrency" ss:MergeAcross="${colCount - 5}"><Data ss:Type="String">₹${formatINR((m.categoryRev && m.categoryRev.openPlay) || 0)}</Data></Cell>
    </Row>
    <Row ss:Height="20">
     <Cell ss:StyleID="TdTextAlt" ss:MergeAcross="2"><Data ss:Type="String">Activities / Workshops</Data></Cell>
     <Cell ss:StyleID="TdCenterAlt" ss:MergeAcross="1"><Data ss:Type="String">${m.catShares.activities}%</Data></Cell>
-    <Cell ss:StyleID="TdCurrencyAlt" ss:MergeAcross="2"><Data ss:Type="String">₹${formatINR(m.categoryRev.activities)}</Data></Cell>
+    <Cell ss:StyleID="TdCurrencyAlt" ss:MergeAcross="${colCount - 5}"><Data ss:Type="String">₹${formatINR((m.categoryRev && m.categoryRev.activities) || 0)}</Data></Cell>
    </Row>
    <Row ss:Height="20">
     <Cell ss:StyleID="TdText" ss:MergeAcross="2"><Data ss:Type="String">Birthdays / Events</Data></Cell>
     <Cell ss:StyleID="TdCenter" ss:MergeAcross="1"><Data ss:Type="String">${m.catShares.birthdays}%</Data></Cell>
-    <Cell ss:StyleID="TdCurrency" ss:MergeAcross="2"><Data ss:Type="String">₹${formatINR(m.categoryRev.birthdays)}</Data></Cell>
+    <Cell ss:StyleID="TdCurrency" ss:MergeAcross="${colCount - 5}"><Data ss:Type="String">₹${formatINR((m.categoryRev && m.categoryRev.birthdays) || 0)}</Data></Cell>
    </Row>
    <Row ss:Height="20">
     <Cell ss:StyleID="TdTextAlt" ss:MergeAcross="2"><Data ss:Type="String">Other (Snacks, Socks &amp; Goods)</Data></Cell>
     <Cell ss:StyleID="TdCenterAlt" ss:MergeAcross="1"><Data ss:Type="String">${m.catShares.other}%</Data></Cell>
-    <Cell ss:StyleID="TdCurrencyAlt" ss:MergeAcross="2"><Data ss:Type="String">₹${formatINR(m.categoryRev.other)}</Data></Cell>
+    <Cell ss:StyleID="TdCurrencyAlt" ss:MergeAcross="${colCount - 5}"><Data ss:Type="String">₹${formatINR((m.categoryRev && m.categoryRev.other) || 0)}</Data></Cell>
    </Row>
    <Row ss:Height="22">
     <Cell ss:StyleID="TotalLabel" ss:MergeAcross="2"><Data ss:Type="String">Total Service &amp; Retail Portfolio</Data></Cell>
     <Cell ss:StyleID="TotalCenter" ss:MergeAcross="1"><Data ss:Type="String">100%</Data></Cell>
-    <Cell ss:StyleID="TotalCurrency" ss:MergeAcross="2"><Data ss:Type="String">₹${formatINR(m.totalCatRev)}</Data></Cell>
+    <Cell ss:StyleID="TotalCurrency" ss:MergeAcross="${colCount - 5}"><Data ss:Type="String">₹${formatINR(m.totalCatRev || 0)}</Data></Cell>
    </Row>
   </Table>
  </Worksheet>
@@ -5780,8 +7020,9 @@ function exportExecutiveReportXML() {
  </Worksheet>
 </Workbook>`;
 
-  dlFile(xml, 'application/vnd.ms-excel', 'SKYLIME_Six_Month_Review.xls');
-  showTallyToast("Excel file exported with 2 live sheets & full formatting!", "green");
+  const fileName = 'SKYLIME_' + m.periodType.charAt(0).toUpperCase() + m.periodType.slice(1) + '_Review.xls';
+  dlFile(xml, 'application/vnd.ms-excel', fileName);
+  showTallyToast("Excel file exported with live " + (m.meta.title || "Dashboard") + " & Learnings!", "green");
 }
 
 // ===== REFRESH ALL =====
@@ -5790,10 +7031,10 @@ function refreshAll() {
   // Inventory
   document.getElementById('inv-count').innerText = data.inventory.length+' items';
   document.getElementById('inventory-body').innerHTML = data.inventory.map(i=>`<tr>
-    <td><span class="badge ${i.type==='Service'?'badge-service':'badge-goods'}">${i.type}</span></td>
-    <td><strong>${i.name}</strong></td><td class="font-mono">${i.hsn||'-'}</td>
+    <td><span class="badge ${i.type==='Service'?'badge-service':'badge-goods'}">${escHtml(i.type)}</span></td>
+    <td><strong>${escHtml(i.name)}</strong></td><td class="font-mono">${escHtml(i.hsn||'-')}</td>
     <td class="font-mono">₹${i.rate}</td><td>${i.qty}</td><td>${i.gst}%</td>
-    <td style="font-size:0.78rem;color:var(--teal);">${i.tallyLedger||'—'}</td>
+    <td style="font-size:0.78rem;color:var(--teal);">${escHtml(i.tallyLedger||'—')}</td>
     <td style="display:flex;gap:4px;"><button class="btn btn-secondary btn-sm" onclick="editItem(${i.id})">&#9998; Edit</button><button class="btn btn-danger btn-sm" onclick="delItem(${i.id})">Delete</button></td>
   </tr>`).join('');
 
@@ -5817,7 +7058,7 @@ function refreshAll() {
   });
 
   document.getElementById('cust-table').querySelector('tbody').innerHTML = custData.map(c => {
-    return `<tr><td class="font-mono">${c.phone}</td><td><strong>${c.name}</strong></td><td>${c.email||'<span class="text-muted">—</span>'}</td><td>${c.visits}</td><td class="font-mono">₹${c.spent.toFixed(2)}</td></tr>`;
+    return `<tr><td class="font-mono">${escHtml(c.phone)}</td><td><strong>${escHtml(c.name)}</strong></td><td>${c.email ? escHtml(c.email) : '<span class="text-muted">—</span>'}</td><td>${c.visits}</td><td class="font-mono">₹${c.spent.toFixed(2)}</td></tr>`;
   }).join('');
 
   // History
@@ -5834,14 +7075,14 @@ function refreshAll() {
   if(saBody) {
     saBody.innerHTML = saList.length ? saList.map(a=>`<tr style="background:rgba(0,180,216,0.04);">
       <td>${new Date(a.date).toLocaleDateString('en-IN')}</td>
-      <td class="font-mono" style="font-size:0.78rem;color:var(--teal);">${a.id}</td>
-      <td><strong>${a.name}</strong></td>
-      <td class="font-mono">${a.phone}</td>
-      <td><span class="badge ${modeMap[a.mode]||'badge-cash'}">${a.mode}</span></td>
+      <td class="font-mono" style="font-size:0.78rem;color:var(--teal);">${escHtml(a.id)}</td>
+      <td><strong>${escHtml(a.name)}</strong></td>
+      <td class="font-mono">${escHtml(a.phone)}</td>
+      <td><span class="badge ${modeMap[a.mode]||'badge-cash'}">${escHtml(a.mode)}</span></td>
       <td class="font-mono" style="color:var(--teal);font-weight:800;">₹${a.amount.toFixed(2)}</td>
-      <td style="font-size:0.78rem;color:var(--text2);">${a.remarks||'—'}</td>
+      <td style="font-size:0.78rem;color:var(--text2);">${escHtml(a.remarks||'—')}</td>
       <td><span class="adv-row-badge" style="background:rgba(0,180,216,0.12);color:var(--teal);border:1px solid rgba(0,180,216,0.3);">⏳ Awaiting Invoice</span></td>
-      <td><button class="btn btn-ghost btn-sm" style="color:var(--accent);border:1px solid rgba(233,69,96,0.2);" onclick="refundStandaloneAdvance('${a.id}')">Refund</button></td>
+      <td><button class="btn btn-ghost btn-sm" style="color:var(--accent);border:1px solid rgba(233,69,96,0.2);" onclick="refundStandaloneAdvance('${escHtml(a.id)}')">Refund</button></td>
     </tr>`).join('') : '<tr><td colspan="9" style="text-align:center;padding:20px;color:var(--text3);">No pending standalone advances</td></tr>';
   }
 
@@ -5858,9 +7099,9 @@ function refreshAll() {
       const bal = s.balance || 0;
       return `<tr style="background:rgba(245,166,35,0.04);">
         <td>${new Date(s.date).toLocaleDateString('en-IN')}</td>
-        <td class="font-mono" style="font-size:0.78rem;">${s.invNo}</td>
-        <td><strong>${s.cust.name}</strong>${s.cust.phone?'<br><span style="font-size:0.7rem;color:var(--text3);">'+s.cust.phone+'</span>':''}</td>
-        <td><span class="badge ${modeMap[s.mode]||'badge-cash'}">${s.mode||'Cash'}</span></td>
+        <td class="font-mono" style="font-size:0.78rem;">${escHtml(s.invNo)}</td>
+        <td><strong>${escHtml(s.cust.name)}</strong>${s.cust.phone?'<br><span style="font-size:0.7rem;color:var(--text3);">'+escHtml(s.cust.phone)+'</span>':''}</td>
+        <td><span class="badge ${modeMap[s.mode]||'badge-cash'}">${escHtml(s.mode||'Cash')}</span></td>
         <td class="font-mono">₹${s.total.toFixed(2)}</td>
         <td class="font-mono" style="color:var(--teal);font-weight:700;">₹${s.advance.toFixed(2)}</td>
         <td class="font-mono" style="color:var(--accent);font-weight:800;">₹${bal.toFixed(2)}</td>
@@ -5888,12 +7129,12 @@ function refreshAll() {
         }
       }
       const cancelledStyle = s.cancelled ? 'opacity:0.5;text-decoration:line-through;' : '';
-      const cancelBadge = s.cancelled ? `<span class="badge" style="background:rgba(233,69,96,0.15);color:var(--accent);font-size:0.65rem;margin-left:4px;" title="${s.cancelReason||''}">CANCELLED</span>` : '';
+      const cancelBadge = s.cancelled ? `<span class="badge" style="background:rgba(233,69,96,0.15);color:var(--accent);font-size:0.65rem;margin-left:4px;" title="${escHtml(s.cancelReason||'')}">CANCELLED</span>` : '';
       return `<tr style="${cancelledStyle}">
         <td>${new Date(s.date).toLocaleDateString('en-IN')}</td>
-        <td class="font-mono" style="font-size:0.78rem;">${s.invNo}${cancelBadge}</td>
-        <td>${s.cust.name}</td>
-        <td><span class="badge ${modeMap[s.mode]||'badge-cash'}">${s.mode||'Cash'}</span></td>
+        <td class="font-mono" style="font-size:0.78rem;">${escHtml(s.invNo)}${cancelBadge}</td>
+        <td>${escHtml(s.cust.name)}</td>
+        <td><span class="badge ${modeMap[s.mode]||'badge-cash'}">${escHtml(s.mode||'Cash')}</span></td>
         <td>${discStr}</td>
         <td class="font-mono"><strong>&#8377;${s.total.toFixed(2)}</strong></td>
         <td>${advBadge||'&#8212;'}</td>
@@ -5902,12 +7143,12 @@ function refreshAll() {
     }),
     ...(data.standaloneAdvances||[]).filter(a=>a.used).map(a=>`<tr style="opacity:0.6;background:rgba(0,180,216,0.03);">
       <td>${new Date(a.date).toLocaleDateString('en-IN')}</td>
-      <td class="font-mono" style="font-size:0.78rem;color:var(--teal);">${a.id}</td>
-      <td>${a.name}</td>
-      <td><span class="badge ${modeMap[a.mode]||'badge-cash'}">${a.mode}</span></td>
+      <td class="font-mono" style="font-size:0.78rem;color:var(--teal);">${escHtml(a.id)}</td>
+      <td>${escHtml(a.name)}</td>
+      <td><span class="badge ${modeMap[a.mode]||'badge-cash'}">${escHtml(a.mode)}</span></td>
       <td>&#8212;</td>
       <td class="font-mono" style="color:var(--teal);">&#8377;${a.amount.toFixed(2)} <span style="font-size:0.7rem;color:var(--text3);">(Advance)</span></td>
-      <td>${a.usedByInv==='REFUNDED' ? '<span class="adv-row-badge" style="background:rgba(233,69,96,0.12);color:var(--accent);border:1px solid rgba(233,69,96,0.3);">💸 Refunded'+(a.refundMode?' ('+a.refundMode+')':'')+'</span>' : '<span class="adv-row-badge closed">&#10003; Used in '+(a.usedByInv||'')+'</span>'}</td>
+      <td>${a.usedByInv==='REFUNDED' ? '<span class="adv-row-badge" style="background:rgba(233,69,96,0.12);color:var(--accent);border:1px solid rgba(233,69,96,0.3);">💸 Refunded'+(a.refundMode?' ('+escHtml(a.refundMode)+')':'')+'</span>' : '<span class="adv-row-badge closed">&#10003; Used in '+(escHtml(a.usedByInv||''))+'</span>'}</td>
       <td>&#8212;</td>
     </tr>`)
   ].join('');
