@@ -2656,15 +2656,20 @@ function showCloudStatusDetails() {
   openModal('modal-cloud-sync');
 }
 
-// Local IndexedDB Save
+// Local IndexedDB Save (returns Promise for clean awaiting)
 function saveLocalIndexedDB() {
-  if (!db) return;
-  try {
-    const tx = db.transaction("core", "readwrite");
-    tx.objectStore("core").put(data, "main");
-  } catch (e) {
-    console.warn("Local IndexedDB save notice:", e);
-  }
+  if (!db) return Promise.resolve(false);
+  return new Promise((resolve) => {
+    try {
+      const tx = db.transaction("core", "readwrite");
+      tx.oncomplete = () => resolve(true);
+      tx.onerror = err => { console.warn("Local IndexedDB save error:", err); resolve(false); };
+      tx.objectStore("core").put(data, "main");
+    } catch (e) {
+      console.warn("Local IndexedDB save notice:", e);
+      resolve(false);
+    }
+  });
 }
 
 // Universal Save: IndexedDB immediately + debounced Firestore push
@@ -2676,17 +2681,23 @@ function saveDB() {
     isLocalSaving = true;
     if (saveDebounceTimer) clearTimeout(saveDebounceTimer);
     saveDebounceTimer = setTimeout(() => {
-      fbDocRef.set(data)
-        .then(() => {
-          lastCloudSyncTime = new Date();
-          isLocalSaving = false;
-          updateCloudStatus('online', 'Changes synced to Google Cloud');
-        })
-        .catch(err => {
-          isLocalSaving = false;
-          console.warn("Firestore save failed:", err);
-          updateCloudStatus('offline', 'Saved locally. Cloud sync pending: ' + err.message);
-        });
+      try {
+        const cleanPayload = JSON.parse(JSON.stringify(data));
+        fbDocRef.set(cleanPayload)
+          .then(() => {
+            lastCloudSyncTime = new Date();
+            isLocalSaving = false;
+            updateCloudStatus('online', 'Changes synced to Google Cloud');
+          })
+          .catch(err => {
+            isLocalSaving = false;
+            console.warn("Firestore save failed:", err);
+            updateCloudStatus('offline', 'Saved locally. Cloud sync pending: ' + err.message);
+          });
+      } catch (prepErr) {
+        isLocalSaving = false;
+        console.warn("Error preparing Firestore payload:", prepErr);
+      }
     }, 400);
   }
 }
@@ -2696,18 +2707,23 @@ function forcePushToCloud() {
   if (!fbDocRef) { alert("Firebase not initialized"); return; }
   updateCloudStatus('syncing', 'Force uploading local data to cloud...');
   showTallyToast('☁️ Uploading all data to Firebase Cloud...', 'teal');
-  fbDocRef.set(data)
-    .then(() => {
-      lastCloudSyncTime = new Date();
-      updateCloudStatus('online', 'Data successfully uploaded to Cloud!');
-      showTallyToast('✅ Cloud database successfully updated!', 'green');
-      closeModal('modal-cloud-sync');
-    })
-    .catch(err => {
-      console.error("Force push failed:", err);
-      updateCloudStatus('error', err.message);
-      alert('Cloud Upload Notice:\n' + err.message + '\n\nPlease check that Firestore Database is created in Firebase Console.');
-    });
+  try {
+    const cleanPayload = JSON.parse(JSON.stringify(data));
+    fbDocRef.set(cleanPayload)
+      .then(() => {
+        lastCloudSyncTime = new Date();
+        updateCloudStatus('online', 'Data successfully uploaded to Cloud!');
+        showTallyToast('✅ Cloud database successfully updated!', 'green');
+        closeModal('modal-cloud-sync');
+      })
+      .catch(err => {
+        console.error("Force push failed:", err);
+        updateCloudStatus('error', err.message);
+        alert('Cloud Upload Notice:\n' + err.message + '\n\nPlease check that Firestore Database is created in Firebase Console.');
+      });
+  } catch (err) {
+    alert('Payload error: ' + err.message);
+  }
 }
 
 // Force Pull from Cloud
@@ -2752,7 +2768,20 @@ function startFirestoreListener() {
 
     if (doc.exists) {
       const cloudData = doc.data();
-      if (isLocalSaving) return;
+      if (isLocalSaving || window._isImportingBackup) return;
+
+      const cloudSalesCount = (cloudData && Array.isArray(cloudData.sales)) ? cloudData.sales.length : 0;
+      const localSalesCount = (data && Array.isArray(data.sales)) ? data.sales.length : 0;
+      const cloudInvCount = (cloudData && Array.isArray(cloudData.inventory)) ? cloudData.inventory.length : 0;
+      const localInvCount = (data && Array.isArray(data.inventory)) ? data.inventory.length : 0;
+
+      // SAFETY SHIELD: Never overwrite populated local data with empty cloud data!
+      if ((localSalesCount > 0 || localInvCount > 0) && (cloudSalesCount === 0 && cloudInvCount === 0)) {
+        console.warn(`Cloud document has 0 sales and 0 items, but local storage has ${localSalesCount} sales and ${localInvCount} items. Pushing local dataset up to cloud...`);
+        updateCloudStatus('syncing', 'Migrating local data up to Cloud...');
+        saveDB();
+        return;
+      }
 
       if (cloudData && (cloudData.sales !== undefined || cloudData.inventory !== undefined || cloudData.config !== undefined)) {
         data = cloudData;
@@ -2766,14 +2795,7 @@ function startFirestoreListener() {
       if (hasLocalData && !hasAutoMigrated) {
         hasAutoMigrated = true;
         updateCloudStatus('syncing', 'First-time setup: Uploading existing ERP data to cloud...');
-        fbDocRef.set(data).then(() => {
-          lastCloudSyncTime = new Date();
-          updateCloudStatus('online', 'Existing ERP data migrated to Cloud!');
-          showTallyToast('☁️ Existing data automatically migrated to Firebase Cloud!', 'green');
-        }).catch(err => {
-          console.warn("Initial cloud migration notice:", err);
-          updateCloudStatus('error', err.message);
-        });
+        saveDB();
       } else {
         updateCloudStatus('online', 'Connected (Cloud database initialized)');
       }
@@ -4185,30 +4207,131 @@ function exportMasterBackup() {
   a.click();
 }
 
+function exportCustomerJSON() {
+  const blob = new Blob([JSON.stringify(data.customers||[],null,2)],{type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `SKYLIME_CUSTOMERS_${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+}
+
 function importMasterBackup(event) {
   const file = event.target.files[0];
   if(!file) return;
-  if(!confirm('⚠️ This will OVERWRITE all current data. Are you sure?')) return;
+  if(!confirm('⚠️ This will OVERWRITE all current data with the contents of this backup. Are you sure you want to proceed?')) {
+    event.target.value = '';
+    return;
+  }
   const reader = new FileReader();
   reader.onload = async e => {
     try {
-      const imported = JSON.parse(e.target.result);
-      if(imported.config && imported.inventory && imported.sales) {
+      let imported = JSON.parse(e.target.result);
+      if (imported && imported.data && (imported.data.sales || imported.data.inventory)) {
+        imported = imported.data;
+      }
+
+      if (!imported || typeof imported !== 'object') {
+        throw new Error("File content is not valid JSON.");
+      }
+
+      const hasSales = Array.isArray(imported.sales);
+      const hasInv = Array.isArray(imported.inventory);
+      const hasConfig = imported.config && typeof imported.config === 'object';
+
+      if (!hasSales && !hasInv && !hasConfig) {
+        throw new Error("Backup file is missing required fields (sales, inventory, or config).");
+      }
+
+      if (imported.config) {
         delete imported.config.pass;
         delete imported.config.staffPass;
-        data = imported;
-        saveLocalIndexedDB();
-        if(fbDocRef) {
-          try {
-            await fbDocRef.set(data);
-          } catch(cloudErr) {
-            console.warn("Cloud backup sync notice:", cloudErr);
+      }
+
+      // Reconstruct customer list from invoices if customers array was empty
+      let custs = Array.isArray(imported.customers) ? imported.customers : [];
+      if (!custs.length && Array.isArray(imported.sales)) {
+        const custMap = {};
+        imported.sales.forEach(s => {
+          if (s.cust && s.cust.phone) {
+            custMap[s.cust.phone] = { phone: s.cust.phone, name: s.cust.name || 'Walk-in', email: s.cust.email || '' };
+          }
+        });
+        custs = Object.values(custMap);
+      }
+
+      // Lock against race conditions with cloud listener
+      window._isImportingBackup = true;
+      isLocalSaving = true;
+
+      data = {
+        config: Object.assign({}, data.config, imported.config || {}),
+        inventory: Array.isArray(imported.inventory) ? imported.inventory : [],
+        sales: Array.isArray(imported.sales) ? imported.sales : [],
+        customers: custs,
+        auditLog: Array.isArray(imported.auditLog) ? imported.auditLog : [],
+        standaloneAdvances: Array.isArray(imported.standaloneAdvances) ? imported.standaloneAdvances : [],
+        execData: imported.execData || data.execData || {},
+        tallyConfig: imported.tallyConfig || data.tallyConfig || {}
+      };
+
+      ensureExecData();
+
+      // Auto-detect the latest sale month for dashboard if present
+      if (data.sales && data.sales.length > 0) {
+        for (const s of data.sales) {
+          const mKey = getMonthKey(s.date);
+          if (mKey && mKey.startsWith('20')) {
+            currentExecMonth = mKey;
+            break;
           }
         }
-        alert('✅ System Restored Successfully & Synced to Cloud!');
-        location.reload();
-      } else throw new Error();
-    } catch(err) { alert('❌ Invalid Backup File'); }
+      }
+
+      // Persist to local IndexedDB and WAIT for disk write
+      await saveLocalIndexedDB();
+
+      // Immediately refresh all screens with the imported figures
+      refreshUI();
+      refreshAll();
+
+      // Sync cleanly to Firebase Cloud in background
+      if (fbDocRef) {
+        try {
+          updateCloudStatus('syncing', 'Syncing imported backup to Cloud...');
+          const cleanPayload = JSON.parse(JSON.stringify(data));
+          await fbDocRef.set(cleanPayload);
+          lastCloudSyncTime = new Date();
+          updateCloudStatus('online', 'Backup synced to Google Cloud!');
+        } catch (cloudErr) {
+          console.warn("Cloud backup sync notice:", cloudErr);
+          updateCloudStatus('offline', 'Saved locally in browser. Cloud: ' + cloudErr.message);
+        }
+      }
+
+      event.target.value = '';
+
+      const sCount = data.sales.length;
+      const iCount = data.inventory.length;
+      const cCount = data.customers.length;
+
+      showTallyToast(`✅ Restored ${sCount} invoices, ${iCount} items, ${cCount} customers!`, 'green');
+      alert(`✅ System Restored Successfully!\n\n• ${sCount} Invoices\n• ${iCount} Inventory Items\n• ${cCount} Customers\n\nAll figures are now live on your screen.`);
+
+      // Switch to dashboard tab so user immediately sees populated figures
+      showTab('dashboard');
+
+      setTimeout(() => {
+        window._isImportingBackup = false;
+        isLocalSaving = false;
+      }, 2000);
+
+    } catch(err) {
+      console.error("Backup import error:", err);
+      alert('❌ Invalid or Corrupt Backup File:\n' + (err.message || 'Please check file format.'));
+      event.target.value = '';
+      window._isImportingBackup = false;
+      isLocalSaving = false;
+    }
   };
   reader.readAsText(file);
 }
@@ -4356,11 +4479,32 @@ function formatINR(val) {
 
 function getMonthKey(dateStr) {
   if (!dateStr) return '';
-  const d = new Date(dateStr);
-  if (isNaN(d.getTime())) return '';
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  return `${y}-${m}`;
+  if (typeof dateStr === 'number') {
+    const d = new Date(dateStr);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+  }
+  const str = String(dateStr).trim();
+  // Support DD/MM/YYYY or DD-MM-YYYY
+  const dmyMatch = str.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+  if (dmyMatch) {
+    const m = dmyMatch[2].padStart(2, '0');
+    const y = dmyMatch[3];
+    return `${y}-${m}`;
+  }
+  // Support YYYY-MM-DD or YYYY/MM/DD
+  const ymdMatch = str.match(/^(\d{4})[\/\-](\d{1,2})/);
+  if (ymdMatch) {
+    const y = ymdMatch[1];
+    const m = ymdMatch[2].padStart(2, '0');
+    return `${y}-${m}`;
+  }
+  const d = new Date(str);
+  if (!isNaN(d.getTime())) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    return `${y}-${m}`;
+  }
+  return '';
 }
 
 // ===== MULTI-PERIOD DASHBOARD ENGINE =====
